@@ -21,13 +21,13 @@ Ideen:
 
 ### Abstrakt
 
-In this workshop you will learn about the new features of Windows Server 2016: Docker and Windows Containers. We will start how to install the Docker engine and secure it for remote access. You will learn the basic Docker commands and the best pracices how to write good Dockerfiles for Windows. We will take a real world application and dockerize it into containers.
+In this workshop you will learn about the new features of Windows Server 2016: Docker and Windows Containers. We will start how to install the Docker Engine and secure it for remote access. You will learn the basic Docker commands and the best practices how to write good Dockerfiles for Windows. We will take a real world application and dockerize it into containers.
 
 ### Gliederung der Inhalte
 
 * Setup Docker Engine on Windows Server 2016
 * Learn about the base OS images
-* Secure remote Docker access
+* Secure remote Docker access via TLS
 * Networking, Logging
 * Dockerfile best practices
 * Dockerizing a Windows application into containers
