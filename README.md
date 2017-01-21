@@ -22,9 +22,9 @@ Finally we will take a real world application based upon microservices and docke
 * Learn about the base OS images
 * Secure remote Docker access via TLS
 * Networking, Logging
-* Dockerfile best practices
-* Dockerizing a Windows application into containers
 * Persisting data using volumes
+* Dockerfile best practices
+* Dockerizing a Windows application
 
 ### What you will need
 
