@@ -10,7 +10,7 @@
 
 In this hands-on workshop you'll learn about the new features of Windows Server 2016: Docker and Windows Containers. We will start how to install the Docker Engine on Microsoft Azure and secure it for remote access with TLS certificates.
 
-You will learn the basic Docker commands to create Docker images and push them to the Docker Hub. In order to run a Docker container you pull a specific Docker image from the Docker Hub and run it on your Docker Engine. With this you also learn how to configure TCP/IP ports and volumes.
+You will learn the basic Docker commands to create Docker images and push them to the Docker Hub. In order to run a Docker container you'll pull a specific Docker image from the Docker Hub and run it on your Docker Engine. With this practice you'll also learn how to configure TCP/IP ports and volumes to connect your running container to the outside world.
 
 We'll dig deep into the art of crafting Dockerfiles for Windows with utilizing PowerShell commands. This way you'll learn some best practices how to write almost perfect Dockerfiles for Windows.
 
