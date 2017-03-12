@@ -4,6 +4,7 @@ class: title
 Docker on Windows <br/> Workshop
 
 ---
+background-image: url(assets/mvp_docker_captain.png)
 
 ## Intros
 
@@ -34,20 +35,6 @@ Docker on Windows <br/> Workshop
 -->
 
 - Feel free to interrupt for questions at any time
-
-<!--
-- Live feedback, questions, help on
-  [Slack](http://container.training/chat)
-  ([get an invite](http://lisainvite.herokuapp.com/))
-
-- All the content is publicly available (slides, code samples, scripts)
--->
-
-<!--
-Remember to change:
-- the link above
-- the "tweet my speed" hashtag in DockerCoins HTML
--->
 
 ---
 
@@ -93,15 +80,8 @@ Remember to change:
 - [GitHub](https://github.com/join) account
   <br/>(if you want to fork the repo)
 
-<!--
-
 - [Gitter](https://gitter.im/) account
   <br/>(to join the conversation during the workshop)
-
-- [Slack](http://lisainvite.herokuapp.com/) account
-  <br/>(to join the conversation during the workshop)
-
--->
 
 - [Docker Hub](https://hub.docker.com) account
   <br/>(it's one way to distribute images on your Docker host)
@@ -112,7 +92,7 @@ Remember to change:
 
 - The whole workshop is hands-on
 
-- We will see Docker 17.03.0 in action
+- We will see Docker EE 17.03.0 in action
 
 - You are invited to reproduce all the demos
 
@@ -123,16 +103,13 @@ Remember to change:
 - This is the stuff you're supposed to do!
 - Go to [stefanscherer.github.io/windows-docker-workshop](https://dstefanscherer.github.io/windows-docker-workshop/) to view these slides
 
-<!--
-
 - Join the chat room on
-  [Slack](http://container.training/chat)
-
--->
+  [gitter.im/windows-docker-workshop/Lobby](https://gitter.im/windows-docker-workshop/Lobby)
 
 ]
 
 ---
+background-image: url(assets/connect_rdp_docker.png)
 
 ## We will (mostly) interact with RDP only
 
@@ -141,6 +118,7 @@ Remember to change:
 - When we have the TLS certs, we can do it from local machine through the Docker API
 
 ---
+background-image: url(assets/powershell.png)
 
 ## Terminals
 
@@ -1084,12 +1062,18 @@ http://stefanscherer.github.io/protecting-a-windows-2016-docker-engine-with-tls/
 
 ---
 
-![rdp local resources](assets/rdp-local-resources.png)
+![rdp local resources](assets/rdp-osx.png)
 
 Microsoft Remote Desktop Beta App on OSX
 
 ---
 
+
+![rdp local resources](assets/rdp-windows.png)
+
+Microsoft Remote Desktop Client on Windows
+
+---
 ![rdp with local folder](assets/rdp-with-local-folder.png)
 
 Local folder shared in RDP session
@@ -1100,7 +1084,15 @@ class: title
 
 # Networking, Logging
 
-https://docs.microsoft.com/en-us/virtualization/windowscontainers/manage-containers/container-networking
+---
+
+## Networking
+
+- Overlay network coming soon
+
+- [Container Networking](https://docs.microsoft.com/en-us/virtualization/windowscontainers/manage-containers/container-networking)
+
+- [Use Docker Compose and Service Discovery on Windows](https://blogs.technet.microsoft.com/virtualization/2016/10/18/use-docker-compose-and-service-discovery-on-windows-to-scale-out-your-multi-service-container-application/)
 
 ---
 
@@ -1108,9 +1100,15 @@ class: title
 
 # Dockerfile best practices
 
-https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/#run
-https://docs.microsoft.com/en-us/virtualization/windowscontainers/manage-docker/manage-windows-dockerfile
-https://docs.microsoft.com/en-us/virtualization/windowscontainers/manage-docker/optimize-windows-dockerfile
+---
+
+## Dockerfile on Windows
+
+- [Best practises for writing Dockerfiles](https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/#run)
+
+- [Dockerfile on Windows](https://docs.microsoft.com/en-us/virtualization/windowscontainers/manage-docker/manage-windows-dockerfile)
+
+- [Optimize Windows Dockerfiles](https://docs.microsoft.com/en-us/virtualization/windowscontainers/manage-docker/optimize-windows-dockerfile)
 
 ---
 
@@ -1118,8 +1116,13 @@ class: title
 
 # Dockerizing a Windows application into containers
 
-https://github.com/docker/labs/tree/master/windows/modernize-traditional-apps/modernize-aspnet
-https://github.com/friism/MusicStore
+---
+
+## MusicStore example
+
+- https://github.com/docker/labs/tree/master/windows/modernize-traditional-apps/modernize-aspnet
+
+- https://github.com/friism/MusicStore
 
 ---
 
