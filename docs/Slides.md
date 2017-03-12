@@ -121,7 +121,7 @@ Remember to change:
 .exercise[
 
 - This is the stuff you're supposed to do!
-- Go to [stefanscherer.github.io/win2016-docker-workshop](https://dstefanscherer.github.io/win2016-docker-workshop/) to view these slides
+- Go to [stefanscherer.github.io/windows-docker-workshop](https://dstefanscherer.github.io/windows-docker-workshop/) to view these slides
 
 <!--
 

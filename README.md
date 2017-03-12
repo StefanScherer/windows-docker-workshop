@@ -1,4 +1,4 @@
-# win2016-docker-workshop
+# windows-docker-workshop
 
 This is the material for the workshop "Getting started with Docker on Windows Server 2016" written by Stefan Scherer.
 
@@ -16,7 +16,7 @@ This is the material for the workshop "Getting started with Docker on Windows Se
 
 - The slides are in the `docs` folder.
 - You can view the slides locally by opening `docs/index.html` in a browser.
-- To view them online open [https://stefanscherer.github.io/win2016-docker-workshop](https://stefanscherer.github.io/win2016-docker-workshop).
+- To view them online open [https://stefanscherer.github.io/windows-docker-workshop](https://stefanscherer.github.io/windows-docker-workshop).
 
 ## Upcoming workshops
 
