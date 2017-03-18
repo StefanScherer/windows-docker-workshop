@@ -11,7 +11,7 @@ background-image: url(assets/mvp_docker_captain.png)
 - Hello! We are
   Stefan ([@stefscherer](https://twitter.com/stefscherer))
   &
-  Dieter ([@quintus23m](https://twitter.com/quintus23m))
+  Dieter ([@Quintus23M](https://twitter.com/Quintus23M))
 
 ---
 
@@ -162,11 +162,11 @@ You are welcome to use the method that you feel the most comfortable with.
 
 - Docker Engine
 
-- Container Image
+- Docker Image
 
-- Container
+- Docker Container
 
-- Container Registry
+- Docker Registry
 
 - Dockerfile
 
@@ -255,7 +255,7 @@ https://github.com/Microsoft/Virtualization-Documentation
 
 class: title
 
-# Container Images
+# Docker Images
 
 ---
 
@@ -281,7 +281,7 @@ background-image: url(assets/base_images.png)
 
 - Provided by Microsoft through the Docker Hub
 
-- All Windows container images are based on one of these two OS images
+- All Windows Docker images are based on one of these two OS images
 
 .exercise[
 - Pull or update to latest Windows base OS images:
@@ -318,7 +318,7 @@ class: title
 
 ---
 
-# Container Image vs. Container
+# Docker Image vs. Container
 
 ## Image
 
@@ -574,13 +574,13 @@ class: title
 
 class: title
 
-# Container Registry
+# Docker Registry
 
 ---
 
 ## Re-use the work of others
 
-- The Docker Hub is a public Container Registry for Docker images
+- The Docker Hub is a public registry for Docker images
 
 .exercise[
 
@@ -653,8 +653,8 @@ class: title
 - Or use the container IP address from the Docker Host
 
   ```powershell
-  docker container inspect -f '{{ .NetworkSettings.Networks.nat.IPAddress }}' iis
-start http://$(docker inspect -f '{{ .NetworkSettings.Networks.nat.IPAddress }}' iis)
+  docker container inspect -f '{{.NetworkSettings.Networks.nat.IPAddress}}' iis
+start http://$(docker inspect -f '{{.NetworkSettings.Networks.nat.IPAddress}}' iis)
   ```
 
  ]
@@ -678,7 +678,7 @@ start http://$(docker inspect -f '{{ .NetworkSettings.Networks.nat.IPAddress }}'
 - Execute an interactive shell inside the still running IIS container
 
   ```powershell
-  docker exec -it iis powershell
+  docker container exec -it iis powershell
   ```
 
 - Go to the default folder with the web content of IIS
@@ -1142,4 +1142,4 @@ Questions?
 
 ## Stefan Scherer [@stefscherer](https://twitter.com/stefscherer)
 
-## Dieter Reuter [@quintus23m](https://twitter.com/quintus23m)
+## Dieter Reuter [@Quintus23M](https://twitter.com/Quintus23M)
