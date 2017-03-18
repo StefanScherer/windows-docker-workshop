@@ -70,7 +70,7 @@ resource "azurerm_virtual_machine" "windows" {
     os_profile {
         computer_name = "${var.dns_prefix}-win-${format("%02d", count.index + 1)}"
         admin_username = "${var.admin_username}"
-        admin_password = "${var.admin_password}"
+        admin_password = "${var.admin_password[count.index]}"
         custom_data = "${base64encode("Param($HostName = \"${var.dns_prefix}-win-${format("%02d", count.index + 1)}.${var.location}.${var.azure_dns_suffix}\") ${file("./provision.ps1")}")}"
     }
 
@@ -81,7 +81,7 @@ resource "azurerm_virtual_machine" "windows" {
             pass = "oobeSystem"
             component = "Microsoft-Windows-Shell-Setup"
             setting_name = "AutoLogon"
-            content = "<AutoLogon><Password><Value>${var.admin_password}</Value></Password><Enabled>true</Enabled><LogonCount>1</LogonCount><Username>${var.admin_username}</Username></AutoLogon>"
+            content = "<AutoLogon><Password><Value>${var.admin_password[count.index]}</Value></Password><Enabled>true</Enabled><LogonCount>1</LogonCount><Username>${var.admin_username}</Username></AutoLogon>"
         }
         additional_unattend_config {
             pass = "oobeSystem"
