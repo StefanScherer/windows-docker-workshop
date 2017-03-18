@@ -253,6 +253,27 @@ https://github.com/Microsoft/Virtualization-Documentation
 
 ---
 
+## Add tab completion to PowerShell
+
+- There is a PowerShell module [`posh-docker`](https://github.com/samneirinck/posh-docker) to add tab completion for docker commands.
+
+.exercise[
+
+- Install the `posh-docker` module and edit your `$PROFILE`
+  ```powershell
+  Install-Module -Scope CurrentUser posh-docker
+  notepad $PROFILE
+  ```
+- Add the module to the `$PROFILE` and save the file
+  ```powershell
+  Import-Module posh-docker
+  ```
+- Open a new PowerShell terminal
+]
+
+
+---
+
 class: title
 
 # Docker Images
@@ -910,6 +931,25 @@ https://docs.docker.com/engine/reference/builder/#/escape
 
 ---
 
+## Other useful commands
+
+- Show disk usage
+- Clean up old images and containers
+
+.exercise[
+
+- Cleanup your host system and check sizes before and afterwards
+
+  ```powershell
+  docker system df
+  docker system prune
+  docker system df
+  ```
+
+]
+
+---
+
 class: title
 
 # Secure
@@ -985,7 +1025,7 @@ http://stefanscherer.github.io/protecting-a-windows-2016-docker-engine-with-tls/
 - Run the dockertls container with local and public IP address (replace `x.x.x.x`)
 
   ```powershell
-  docker run --rm `
+  docker container run --rm `
     -e SERVER_NAME=dog2017-win-XX.westeurope.cloudapp.azure.com `
     -e IP_ADDRESSES=$ips,x.x.x.x `
     -v "C:\ProgramData\docker:C:\ProgramData\docker" `
@@ -1082,13 +1122,278 @@ Local folder shared in RDP session
 
 class: title
 
-# Networking, Logging
+# Networking
 
 ---
 
-## Networking
+## Networking modes
 
-- Overlay network coming soon on Windows Server 2016
+- **Network Address Translation (NAT)**
+  - each container will receive an IP address from an internal, private IP prefix
+
+- **Transparent**
+  - directly connected to the physical network
+
+- **Overlay**
+  - used to connect container endpoints across multiple container hosts
+
+- **L2 Bridge**
+  - access to physical network with MAC address translation
+
+---
+
+## Listing networks
+
+- Default network is `nat`, there is also a `none` network.
+
+.exercise[
+
+- List all networks on the host
+
+  ```powershell
+  ipconfig
+  ```
+
+- The `vEthernet (HNS Internal NIC)` ethernet adapter is used by Docker containers
+
+- List all container networks
+
+  ```powershell
+  docker network ls
+  ```
+
+]
+
+---
+
+## Networking modes
+
+.exercise[
+
+- Run a container with network
+
+  ```powershell
+  docker container run microsoft/nanoserver ipconfig
+  ```
+
+- Run a container without a network
+
+  ```powershell
+  docker container run --network none microsoft/nanoserver ipconfig
+  ```
+
+]
+
+---
+
+## DNS in Container network
+
+- Container can lookup each other with DNS
+
+.exercise[
+
+- Run IIS again, as well as an interactive container
+
+  ```powershell
+  docker container run --name iis -p 80:80 -d microsoft/iis:nanoserver
+  docker container run -it microsoft/nanoserver powershell
+  ```
+
+- Now inside the container, try to access the IIS web server by its DNS name
+
+
+  ```powershell
+  Invoke-WebRequest http://iis
+  ```
+
+]
+
+- Don't forget to kill and remove the IIS container again.
+
+---
+background-image: url(assets/compose.png)
+
+## Using Docker Compose
+
+- A tool from Docker
+- Define and run multi-container applications
+
+---
+
+## Installing Docker Compose
+
+- Docker for Mac/Docker for Windows already has Docker Compose installed
+- Installation on Windows Server 2016
+
+.exercise[
+
+- If you have [Chocolatey](https://chocolatey.org/) package manager
+
+  ```powershell
+  choco install docker-compose
+  ```
+
+- Otherwise download binary manually from https://github.com/docker/compose/releases
+
+]
+
+---
+
+## The Compose file
+
+- Docker Compose uses a `docker-compose.yml` file to define multiple services
+
+- Define services in a Compose file
+  ```
+  version: '2.1'
+  services:
+      web:
+        image: microsoft/iis:nanoserver
+        ports:
+          - 80:80
+  ```
+
+- Always append this to use the default nat network
+  ```
+  networks:
+      default:
+        external:
+          name: nat
+  ```
+
+---
+
+## Building images with Compose
+
+- Docker Compose can use a `Dockerfile` per service to build an image locally
+
+- Use `build:` instead of `image:`
+  ```
+  version: '2.1'
+  services:
+      web:
+        build: .
+        ports:
+          - 80:80
+  ```
+
+---
+
+## Networking with Compose
+
+- The service names can be used to lookup them with DNS
+  ```
+  services:
+      web:
+        image: microsoft/iis:nanoserver
+        ports:
+          - 80:80
+
+      client:
+        image: microsoft/nanoserver
+        command: powershell -Command Invoke-WebRequest http://web
+  ```
+
+---
+
+## Practice DNS lookups with Compose
+
+- We replay the manual test of IIS and a client container with Compose.
+
+.exercise[
+
+- Create a new folder
+  ```powershell
+  mkdir dnstest
+  cd dnstest
+  ```
+
+- Create a `docker-compose.yml` file to test DNS lookups
+
+  ```powershell
+  notepad docker-compose.yml
+  ```
+
+]
+
+---
+
+.exercise[
+
+- Create the `docker-compose.yml` with these two services
+
+  ```powershell
+  version: '2.1'
+  services:
+      web:
+        image: microsoft/iis:nanoserver
+        ports:
+          - 80:80
+
+      client:
+        image: microsoft/nanoserver
+        command: powershell -Command Sleep 2 ; Invoke-WebRequest http://web
+        depends_on:
+          - web
+
+  networks:
+      default:
+        external:
+          name: nat
+  ```
+
+]
+
+---
+
+## Run the first containers with Compose
+
+- Compose can run all containers defined with one command
+
+.exercise[
+
+- Check the usage of `docker-compose`
+  ```powershell
+  docker-compose --help
+  ```
+
+- Run all containers
+  ```powershell
+  docker-compose up
+  ```
+
+- Press `[CTRL] + C` to stop all containers
+- If client could not invoke the web request, try it again.
+]
+
+---
+
+## Run containers in the background
+
+- Compose can run containers in detached mode in background
+
+.exercise[
+
+- Run all containers in the background
+  ```powershell
+  docker-compose up -d
+  ```
+
+- Check which containers are running
+  ```powershell
+  docker-compose ps
+  ```
+
+- Check the output of the client in its logs
+  ```powershell
+  docker-compose logs -t client
+  ```
+
+]
+
+---
+
+## Networking resources
 
 - [Container Networking](https://docs.microsoft.com/en-us/virtualization/windowscontainers/manage-containers/container-networking)
 
