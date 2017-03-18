@@ -141,15 +141,14 @@ You are welcome to use the method that you feel the most comfortable with.
 - Docker Compose 1.11.2
 
 .exercise[
-- Log into your Docker host through RDP <br />
-  `dog2017-win-XX.westeurope.cloudapp.azure.com`
+- Log into your Docker host through RDP (user and password is on your card)<br /><br />
+  **`dog2017-win-XX.westeurope.cloudapp.azure.com`**
 
 - Open a terminal
 
 - Check all installed versions:
   ```bash
   docker version
-  docker-compose -v
   ```
 
 ]
@@ -1422,6 +1421,53 @@ background-image: url(assets/compose.png)
 class: title
 
 # Dockerfile best practices
+
+---
+
+## Use single backslash
+
+- Use the `escape` comment
+
+  ```Dockerfile
+  # escape=`
+  FROM microsoft/iis:nanoserver
+  COPY iisstart.htm C:\inetpub\wwwroot
+  ```
+
+- The `CMD` instruction is JSON formatted. You still need double backslash there.
+
+- Alternative: Use "unix" slashes where ever you can. <br/>
+  A lot of programs can handle it.
+
+---
+
+## Use PowerShell
+
+- Use the `SHELL` instruction to set PowerShell as default shell.
+
+- Use `$ErrorActionPreference = 'Stop'` to abort on first error.
+
+- Use `$ProgressPreference = 'SilentlyContinue'` to improve download speed.
+
+  ```Dockerfile
+  FROM microsoft/nanoserver
+
+  SHELL ["powershell", "-Command", `
+      "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+  ```
+
+---
+
+## Download a file
+
+- Use `Invoke-WebRequest` to download files.
+
+- It works both in Windows Server Core and in Nano Server images.
+
+  ```Dockerfile
+  RUN Invoke-WebRequest 'http://foo.com/bar.zip' -OutFile 'bar.zip' -UseBasicParsing
+  ```
+---
 
 ---
 
