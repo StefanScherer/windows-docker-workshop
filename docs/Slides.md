@@ -171,6 +171,24 @@ You are welcome to use the method that you feel the most comfortable with.
 - Dockerfile
 
 ---
+background-image: url(assets/what_is_a_container.png)
+
+## What is a container?
+
+- Standarized packaging for<br/>
+  software and dependencies
+
+- Isolate apps from each other
+
+- Share the same OS kernel
+
+- Works for all major Linux<br/>
+  distributions
+
+- Containers native to<br/>
+  Windows Server 2016
+
+---
 
 class: title
 
@@ -290,7 +308,7 @@ background-image: url(assets/base_images.png)
 
 ## FROM microsoft/nanoserver
   * fast to boot
-  * about 700 MByte
+  * about 900 MByte
   * software may need porting
   * No 32bit, no MSI
 
@@ -952,9 +970,8 @@ https://docs.docker.com/engine/reference/builder/#/escape
 
 class: title
 
-# Secure
-# remote Docker access
-# via TLS
+# Secure remote
+# Docker access via TLS
 
 ---
 
