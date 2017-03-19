@@ -1443,7 +1443,28 @@ class: title
 
 ## Use PowerShell
 
+- The default shell in Windows containers is `cmd.exe`.
+
+- Using PowerShell gives you much more features eg. porting Linux Dockerfiles to Windows
+  - Download files from the Internet
+  - Extract ZIP files
+  - Calculate checksums
+
+- Example
+  ```Dockerfile
+  # escape=`
+  FROM microsoft/windowsservercore
+  RUN powershell -Command Invoke-WebRequest 'http://foo.com/bar.zip' `
+                              -OutFile 'bar.zip' -UseBasicParsing
+  RUN powershell -Command Expand-Archive bar.zip -DestinationPath C:\
+  ```
+
+---
+
+## Switch to PowerShell
+
 - Use the `SHELL` instruction to set PowerShell as default shell.
+- So you don't have to write `powershell -Command` in each `RUN` instruction.
 
 - Use `$ErrorActionPreference = 'Stop'` to abort on first error.
 
@@ -1458,26 +1479,183 @@ class: title
 
 ---
 
-## Download a file
+## Using PowerShell in Dockerfile
 
-- Use `Invoke-WebRequest` to download files.
-
-- It works both in Windows Server Core and in Nano Server images.
+- A full example to use PowerShell by default.
 
   ```Dockerfile
+  # escape=`
+  FROM microsoft/windowsservercore
+
+  SHELL ["powershell", "-Command", `
+      "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+
   RUN Invoke-WebRequest 'http://foo.com/bar.zip' -OutFile 'bar.zip' -UseBasicParsing
+  RUN Expand-Archive bar.zip -DestinationPath C:\
+  RUN Remove-Item bar.zip
   ```
----
+
+--
+- What's wrong with it?
 
 ---
 
-## Dockerfile on Windows
+## Download a temporary file
+
+- Each `RUN` instruction builds one layer of your image.
+
+--
+
+- Removing a file of a previous layer does not shrink your final Docker image.
+
+--
+
+- Combine multiple commands to have an atomic build step for eg.
+  - Download - Extract - Remove
+
+  ```Dockerfile
+  # escape=`
+  FROM microsoft/windowsservercore
+
+  SHELL ["powershell", "-Command", `
+      "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+
+  RUN iwr 'http://foo.com/bar.zip' -OutFile 'bar.zip' -UseBasicParsing ; `
+        Expand-Archive bar.zip -DestinationPath C:\ ; `
+        Remove-Item bar.zip
+  ```
+
+---
+
+## But ...
+
+- Use multiple `RUN` instructions while developing a Docker image
+
+- You can benefit of layer caching.
+
+- Downloading 1GB ZIP and doing the extract command wrong is painful.
+
+--
+
+- Experimental feature
+  - `docker build --squash`
+
+  - Squash all layers into one.
+  - Use multiple `RUN` instructions to keep Dockerfile readable.
+
+  - Docker still caches individual layers to make subsequent builds fast.
+
+---
+
+## Resources for Dockerfile on Windows
 
 - [Best practises for writing Dockerfiles](https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/#run)
 
 - [Dockerfile on Windows](https://docs.microsoft.com/en-us/virtualization/windowscontainers/manage-docker/manage-windows-dockerfile)
 
 - [Optimize Windows Dockerfiles](https://docs.microsoft.com/en-us/virtualization/windowscontainers/manage-docker/optimize-windows-dockerfile)
+
+---
+
+class: title
+
+# Persisting data using volumes
+
+---
+
+## Using volumes
+
+- A container is not able to persist data for you.
+
+- If you kill a container and run a new container it starts in a fresh environment.
+
+- Volumes can be used to persist data outside of containers.
+
+.exercise[
+
+- Write a small Dockerfile that reads and writes a file at runtime.
+  ```Dockerfile
+  FROM microsoft/nanoserver
+  CMD cmd /c dir content.txt & echo hello >content.txt
+  ```
+
+- Build and run the container. Run it again.
+  ```powershell
+  docker build -t content .
+  docker run content
+  ```
+
+]
+
+---
+
+## Prepare the image to have a volume mount point
+
+- Now we prepare the Dockerfile with a workdir to add a volume at runtime.
+
+.exercise[
+
+- Add a `WORKDIR` to have an empty folder inside the container.
+  ```Dockerfile
+  FROM microsoft/nanoserver
+  WORKDIR /data
+  CMD cmd /c dir content.txt & echo hello >content.txt
+  ```
+
+- Build and run the container. Run it again.
+  ```powershell
+  docker build -t content .
+  docker run content
+  ```
+
+]
+
+---
+
+## Adding a volume from host
+
+- The file `content.txt` is still not persisted.
+
+- Now add a volume from the host with the `-v` option.
+
+.exercise[
+
+- Run the container with a volume mount point.
+  ```powershell
+  docker run -v "$(pwd):C:\data" content
+  ```
+
+- It shows the same output, but look at the host directory. Run another container.
+  ```powershell
+  dir
+  docker run -v "$(pwd):C:\data" content
+  ```
+
+]
+
+---
+
+## Use the VOLUME instruction
+
+- There is a `VOLUME` instruction in Dockerfiles.
+
+.exercise[
+
+- Add a `VOLUME` to make it more readable.
+  ```Dockerfile
+  # escape=`
+  FROM microsoft/nanoserver
+  VOLUME C:\data
+  CMD cmd /c dir c:\data\content.txt & echo hello >c:\data\content.txt
+  ```
+
+- Build and run the container. Run it again. Does it behave different?
+  ```powershell
+  docker build -t content .
+  docker run content
+  ```
+
+]
 
 ---
 
@@ -1491,15 +1669,7 @@ class: title
 
 - https://github.com/docker/labs/tree/master/windows/modernize-traditional-apps/modernize-aspnet
 
-- https://github.com/friism/MusicStore
-
----
-
-class: title
-
-# Persisting data using volumes
-
-
+- https://github.com/aspnet/MusicStore
 
 ---
 
