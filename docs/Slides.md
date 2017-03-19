@@ -40,19 +40,21 @@ background-image: url(assets/mvp_docker_captain.png)
 
 ## Agenda
 
+- Docker Fundamentals
+
 - Setup Docker Engine on Windows Server 2016
 
 - Learn about the base OS images
 
 - Secure remote Docker access via TLS
 
-- Networking, Logging
+- Networking
 
 - Dockerfile best practices
 
-- Dockerizing a Windows application into containers
-
 - Persisting data using volumes
+
+- Dockerizing a Windows application into containers
 
 ---
 
@@ -829,7 +831,9 @@ class: title
 ## Describe how to build Docker images
 
 - A `Dockerfile` is a text file with the description how to build a specific Docker image.
+
 - Make the result repeatable by others.
+
 - Or could you describe how to modify the IIS start page?
 
 ---
@@ -1656,6 +1660,46 @@ class: title
   ```
 
 ]
+
+---
+
+## Windows volumes in practice
+
+## Empty directory
+
+- You can mount a volume only into an empty directory.
+
+- The `microsoft/iis` default folder `C:\inetpub\wwwroot` is not empty.
+
+## Real path problem
+
+- Some applications try to get the **real path** of a file.
+- They often fail at the reparse point.
+
+- Use a mapped drive as a workaround.
+
+---
+
+## Use a mapped drive
+
+- This is a workaround to run Node.js sources mounted from the host
+
+```Dockerfile
+# escape=`
+FROM stefanscherer/node-windows:7.7.3-nano
+
+RUN npm install -g nodemon
+
+VOLUME C:\code
+RUN set-itemproperty -path `
+    'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\DOS Devices' `
+    -Name 'G:' -Value '\??\C:\code' -Type String
+WORKDIR G:\
+
+CMD ["nodemon.cmd", "--debug=5858", "app.js"]
+```
+
+- The Node.js app is running in `G:\`, you still use `C:\code` for your volume.
 
 ---
 
