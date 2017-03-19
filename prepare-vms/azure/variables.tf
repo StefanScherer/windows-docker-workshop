@@ -55,11 +55,11 @@ variable "admin_username" {
 
 variable "admin_password" {
   default = [
-    "bQq&2e8tA3TH2",
+    "bQq!2e8tA3TH2",
     "ePJi72d2J;3jn",
     "9M/znt9CZ63sC",
-    "48Egj7bV&JCC4",
-    "B8BiE9u3b?A7X",
+    "48Egj7bV!JCC4",
+    "B8BiE9u3b!A7X",
     "8Ed6ju4n7QT[n",
     "2i89KPph9,UzH",
     "E434vNXhW/r4t",
@@ -74,11 +74,11 @@ variable "admin_password" {
     "oin%3QdRy629Z",
     "Epk4^32rMUK9H",
     "Lac2X9BY7;uy9",
-    "gx4QY8vtc4c&2",
+    "gx4QY8vtc4c!2",
     "tujsL.48G79ac",
     "f92gPc6nkHP*8",
     "R6jYn78VL9)wL",
-    "H34bxaHD?Dc44",
+    "H34bxaHD!Dc44",
     "j9A3aC(3Ybkz8",
     "3RVsyo8Q.zq34",
     "yyNA)47UT6RE2",

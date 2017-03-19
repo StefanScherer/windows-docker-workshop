@@ -3,7 +3,7 @@
 | FQDN | dog2017-win-01.westeurope.cloudapp.azure.com |
 |-|-|
 | Username | admin3956 |
-| Password | `bQq&2e8tA3TH2` |
+| Password | `bQq!2e8tA3TH2` |
 
 | FQDN | dog2017-win-02.westeurope.cloudapp.azure.com |
 |-|-|
@@ -18,12 +18,12 @@
 | FQDN | dog2017-win-04.westeurope.cloudapp.azure.com   |
 |-|-|
 | Username | admin9254 |
-| Password | `48Egj7bV&JCC4` |
+| Password | `48Egj7bV!JCC4` |
 
 | FQDN | dog2017-win-05.westeurope.cloudapp.azure.com   |
 |-|-|
 | Username | admin2937 |
-| Password | `B8BiE9u3b?A7X` |
+| Password | `B8BiE9u3b!A7X` |
 
 | FQDN | dog2017-win-06.westeurope.cloudapp.azure.com   |
 |-|-|
@@ -104,7 +104,7 @@
 | FQDN | dog2017-win-20.westeurope.cloudapp.azure.com   |
 |-|-|
 | Username | admin8253 |
-| Password | `gx4QY8vtc4c&2` |
+| Password | `gx4QY8vtc4c!2` |
 
 | FQDN | dog2017-win-21.westeurope.cloudapp.azure.com   |
 |-|-|
@@ -124,7 +124,7 @@
 | FQDN | dog2017-win-24.westeurope.cloudapp.azure.com   |
 |-|-|
 | Username | admin5242 |
-| Password | `H34bxaHD?Dc44` |
+| Password | `H34bxaHD!Dc44` |
 
 # Accounts 25 - 30
 
