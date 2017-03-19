@@ -37,7 +37,7 @@ if (!(Test-Path 'c:\Program Files\sysinternals\bginfo.bgi')) {
   (New-Object Net.WebClient).DownloadFile('https://github.com/StefanScherer/adfs2/raw/master/scripts/bginfo-workshop.bgi', 'c:\Program Files\sysinternals\bginfo.bgi')
 }
 $vbsScript = @'
-WScript.Sleep 5000
+WScript.Sleep 2000
 Dim objShell
 Set objShell = WScript.CreateObject( "WScript.Shell" )
 objShell.Run("""c:\Program Files\sysinternals\bginfo.exe"" /accepteula ""c:\Program Files\sysinternals\bginfo.bgi"" /silent /timer:0")
