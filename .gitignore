@@ -1,3 +1,2 @@
-*.tfstate
-*.tfstate.backup
+*.tfstate*
 crash.log
