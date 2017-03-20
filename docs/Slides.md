@@ -103,7 +103,7 @@ background-image: url(assets/mvp_docker_captain.png)
 .exercise[
 
 - This is the stuff you're supposed to do!
-- Go to [stefanscherer.github.io/windows-docker-workshop](https://dstefanscherer.github.io/windows-docker-workshop/) to view these slides
+- Go to [stefanscherer.github.io/windows-docker-workshop](https://stefanscherer.github.io/windows-docker-workshop/) to view these slides
 
 - Join the chat room on
   [gitter.im/windows-docker-workshop/Lobby](https://gitter.im/windows-docker-workshop/Lobby)
