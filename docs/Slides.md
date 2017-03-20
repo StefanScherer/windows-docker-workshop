@@ -1067,11 +1067,11 @@ http://stefanscherer.github.io/protecting-a-windows-2016-docker-engine-with-tls/
   dir ~\.docker
   ```
 
-- Check server certs and `daemon.cfg`
+- Check server certs and `daemon.json`
 
   ```powershell
   dir C:\ProgramData\docker\certs.d
-  cat C:\ProgramData\docker\config\daemon.cfg
+  cat C:\ProgramData\docker\config\daemon.json
   ```
 
 ]
@@ -1082,7 +1082,7 @@ http://stefanscherer.github.io/protecting-a-windows-2016-docker-engine-with-tls/
 
 .exercise[
 
-- Activate the changes in `daemon.cfg`
+- Activate the changes in `daemon.json`
 
   ```powershell
   Stop-Service docker
