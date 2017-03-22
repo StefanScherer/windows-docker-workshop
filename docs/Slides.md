@@ -1703,6 +1703,12 @@ CMD ["nodemon.cmd", "--debug=5858", "app.js"]
 
 ---
 
+## Third-party volume driver plugins
+
+- [Tech Preview: Windows Containers Docker Volume plugin from NimbleStorage](https://connect.nimblestorage.com/community/app-integration/blog/2017/03/20/tech-preview-windows-containers-docker-volume-plugin)
+
+---
+
 class: title
 
 # Dockerizing a Windows application into containers
