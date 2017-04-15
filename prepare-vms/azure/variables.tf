@@ -1,7 +1,7 @@
 # Settings
 
 variable "account" {
-  default = "dc-mta"
+  default = "dcmta"
 }
 
 variable "dns_prefix" {
