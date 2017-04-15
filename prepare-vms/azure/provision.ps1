@@ -62,6 +62,13 @@ choco install -y googlechrome
 Write-Host Install Docker Compose
 choco install -y docker-compose
 
+Write-Host Pulling latest images
+docker pull microsoft/windowsservercore
+docker pull microsoft/nanoserver
+
+Write-Host Update Docker
+Install-Package -Name docker -ProviderName DockerMsftProvider -Verbose -Update -Force
+
 Write-Host Disable autologon
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name AutoAdminLogon -PropertyType DWORD -Value "0" -Force
 
