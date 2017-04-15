@@ -51,15 +51,16 @@ Write-Host Install Chocolatey
 iex (wget 'https://chocolatey.org/install.ps1' -UseBasicParsing)
 
 Write-Host Install editors
-choco install -y atom
 choco install -y visualstudiocode
-choco install -y notepadplusplus.install
 
 Write-Host Install Git
 choco install -y git
 
 Write-Host Install browsers
 choco install -y googlechrome
+
+Write-Host Install Docker Compose
+choco install -y docker-compose
 
 Write-Host Disable autologon
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name AutoAdminLogon -PropertyType DWORD -Value "0" -Force

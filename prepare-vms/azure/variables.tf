@@ -1,16 +1,16 @@
 # Settings
 
 variable "account" {
-  default = "docker"
+  default = "dc-mta"
 }
 
 variable "dns_prefix" {
-  default = "docker"
+  default = "dc-mta"
 }
 
 variable "location" {
   // default = "northeurope"
-  default = "westeurope"
+  default = "centralus"
 }
 
 variable "azure_dns_suffix" {
@@ -19,11 +19,11 @@ variable "azure_dns_suffix" {
 }
 
 variable "admin_username" {
-  default = "Password1234!"
+  default = "testadmin"
 }
 
 variable "admin_password" {
-  default = "testadmin"
+  default = "Password1234!"
 }
 
 variable "count" {
