@@ -68,10 +68,10 @@ resource "azurerm_virtual_machine" "windows" {
     }
 
     os_profile {
-        computer_name = "${var.dns_prefix}-win-${format("%02d", count.index + 1)}"
+        computer_name = "${var.dns_prefix}-${format("%02d", count.index + 1)}"
         admin_username = "${var.admin_username}"
         admin_password = "${var.admin_password}"
-        custom_data = "${base64encode("Param($HostName = \"${var.dns_prefix}-win-${format("%02d", count.index + 1)}.${var.location}.${var.azure_dns_suffix}\") ${file("./provision.ps1")}")}"
+        custom_data = "${base64encode("Param($HostName = \"${var.dns_prefix}-${format("%02d", count.index + 1)}.${var.location}.${var.azure_dns_suffix}\") ${file("./provision.ps1")}")}"
     }
 
     os_profile_windows_config {
