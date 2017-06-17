@@ -33,7 +33,7 @@ resource "azurerm_public_ip" "windows" {
   idle_timeout_in_minutes      = 30
   location                     = "${var.location}"
   name                         = "windows-${format("%02d", count.index + 1)}-publicip"
-  public_ip_address_allocation = "static"
+  public_ip_address_allocation = "dynamic"
   resource_group_name          = "${azurerm_resource_group.global.name}"
 }
 
