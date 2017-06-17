@@ -19,6 +19,9 @@ Cscript $env:WinDir\System32\SCregEdit.wsf /AU 1
 Net stop wuauserv
 Net start wuauserv
 
+Write-Host Disable Windows Defender
+Set-MpPreference -DisableRealtimeMonitoring $true
+
 Write-Host Do not open Server Manager at logon
 New-ItemProperty -Path HKCU:\Software\Microsoft\ServerManager -Name DoNotOpenServerManagerAtLogon -PropertyType DWORD -Value "1" -Force
 
