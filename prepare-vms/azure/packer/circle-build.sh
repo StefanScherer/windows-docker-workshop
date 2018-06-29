@@ -15,6 +15,5 @@ set -x
 packer build \
   -var "vm_size=${PACKER_VM_SIZE}" \
   -var "location=${PACKER_LOCATION}" \
-  -var "custom_managed_image_name=$custom_managed_image_name" \
   -var "image_name=${PACKER_TEMPLATE}_$CIRCLE_BUILD_NUM" \
-  "$json_template"
+  "${PACKER_TEMPLATE}.json"

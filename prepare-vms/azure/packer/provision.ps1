@@ -1,16 +1,6 @@
-Start-Transcript -Path C:\provision.log
-
-function Get-HostToIP($hostname) {
-  $result = [system.Net.Dns]::GetHostByName($hostname)
-  $result.AddressList | ForEach-Object {$_.IPAddressToString }
-}
-
 Write-Host "provision.ps1"
 Write-Host "HostName = $($HostName)"
 
-$PublicIPAddress = Get-HostToIP($HostName)
-
-Write-Host "PublicIPAddress = $($PublicIPAddress)"
 Write-Host "USERPROFILE = $($env:USERPROFILE)"
 Write-Host "pwd = $($pwd)"
 
@@ -24,10 +14,6 @@ Set-MpPreference -DisableRealtimeMonitoring $true
 
 Write-Host Do not open Server Manager at logon
 New-ItemProperty -Path HKCU:\Software\Microsoft\ServerManager -Name DoNotOpenServerManagerAtLogon -PropertyType DWORD -Value "1" -Force
-
-Write-Host Install bginfo
-[Environment]::SetEnvironmentVariable('FQDN', $HostName, [EnvironmentVariableTarget]::Machine)
-[Environment]::SetEnvironmentVariable('PUBIP', $PublicIPAddress, [EnvironmentVariableTarget]::Machine)
 
 Write-Host Install bginfo
 if (!(Test-Path 'c:\Program Files\sysinternals')) {
@@ -80,9 +66,3 @@ Get-Content C:\windows\system32\en-us\WUA_SearchDownloadInstall.vbs | ForEach-Ob
   $_ -replace 'confirm = msgbox.*$', 'confirm = vbNo'
 } | Out-File $env:TEMP\WUA_SearchDownloadInstall.vbs
 "a`na" | cscript $env:TEMP\WUA_SearchDownloadInstall.vbs
-
-Write-Host Cleaning up
-Remove-Item C:\provision.ps1
-
-Write-Host Restarting computer
-Restart-Computer
