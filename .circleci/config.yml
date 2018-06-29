@@ -1,0 +1,103 @@
+version: 2
+
+jobs:
+  shellcheck:
+    docker:
+      - image: nlknguyen/alpine-shellcheck
+
+    steps:
+      - checkout
+
+      - run:
+          name: Run Shellcheck
+          command: shellcheck -s bash *.sh prepare-vms/azure/*.sh prepare-vms/azure/packer/*.sh
+
+  packer-validate:
+    docker:
+      - image: hashicorp/packer:1.2.4
+
+    steps:
+      - checkout
+
+      - run:
+          name: Run Packer validate
+          command: |
+            cd prepare-vms/azure/packer
+            for filename in *.json; do
+              packer validate $filename
+            done
+
+  packer: &packer
+    docker:
+      - image: hashicorp/packer:1.2.4
+
+    steps:
+      - checkout
+
+      - run:
+          name: Run Packer build on Azure
+          command: ./prepare-vms/azure/packer/circle-build.sh
+          no_output_timeout: 3600
+
+  terraform-validate:
+    docker:
+      - image: hashicorp/terraform:0.11.7
+
+    steps:
+      - checkout
+
+      - run:
+          name: Run Terraform validate
+          command: |
+            cd prepare-vms/azure/terraform
+            terraform init
+            terraform validate
+
+  terraform: &terraform
+    docker:
+      - image: hashicorp/terraform:0.11.7
+
+    steps:
+      - checkout
+
+      - run:
+          name: Build infrastructure
+          command: |
+            cd terraform
+            terraform init
+            ./circle-build.sh
+
+      - run:
+          name: Run test
+          command: |
+            cd terraform
+            ./circle-test.sh
+
+      - run:
+          name: Destroy infrastructure
+          command: |
+            cd terraform
+            ./circle-destroy.sh
+
+  build-windows-2016:
+    <<: *packer
+    environment:
+      - PACKER_TEMPLATE: "windows_2016"
+
+workflows:
+  version: 2
+
+  test-and-build:
+    jobs:
+      - shellcheck
+      - packer-validate
+      - terraform-validate
+      - build-windows-2016:
+          requires:
+            - shellcheck
+            - packer-validate
+            - terraform-validate
+          filters:
+            branches:
+              only:
+                - master
