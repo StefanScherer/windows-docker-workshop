@@ -1,5 +1,6 @@
 # windows-docker-workshop
 [![Join the chat at https://gitter.im/windows-docker-workshop/Lobby](https://badges.gitter.im/windows-docker-workshop/Lobby.svg)](https://gitter.im/windows-docker-workshop/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![CircleCI](https://circleci.com/gh/StefanScherer/windows-docker-workshop.svg?style=svg)](https://circleci.com/gh/StefanScherer/windows-docker-workshop)
 
 This is the material for the workshop "Getting started with Docker on Windows Server 2016" written by Stefan Scherer.
 
