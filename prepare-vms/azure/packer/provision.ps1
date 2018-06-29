@@ -53,6 +53,11 @@ Write-Host Pulling latest images
 docker pull microsoft/windowsservercore
 docker pull microsoft/nanoserver
 
+Write-Host Pulling some application images
+docker pull microsoft/iis
+docker pull golang
+docker pull golang:nanoserver
+
 Write-Host Update Docker
 Install-Package -Name docker -ProviderName DockerMsftProvider -Verbose -Update -RequiredVersion 18.03.1-ee-1 -Force
 
