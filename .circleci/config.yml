@@ -10,7 +10,7 @@ jobs:
 
       - run:
           name: Run Shellcheck
-          command: shellcheck -s bash *.sh prepare-vms/azure/*.sh prepare-vms/azure/packer/*.sh
+          command: shellcheck -s bash docs/*.sh prepare-vms/azure/*.sh prepare-vms/azure/packer/*.sh
 
   packer-validate:
     docker:
