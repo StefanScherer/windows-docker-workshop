@@ -8,10 +8,8 @@ background-image: url(assets/mvp_docker_captain.png)
 
 ## Intros
 
-- Hello! We are
+- Hello! I am
   Stefan ([@stefscherer](https://twitter.com/stefscherer))
-  &
-  Dieter ([@Quintus23M](https://twitter.com/Quintus23M))
 
 ---
 
@@ -22,10 +20,9 @@ background-image: url(assets/mvp_docker_captain.png)
 -->
 
 .small[
-- 13:30-15:00 part 1
-- 15:00-15:15 coffee break
-- 15:15-16:45 part 2
-- 16:45-17:00 Q&A
+- 17:00-17:30 get together with some Pizza
+- 17:30-21:30 hands-on workshop
+- 21:30-      get some more Pizza
 ]
 
 <!--
@@ -64,7 +61,7 @@ background-image: url(assets/mvp_docker_captain.png)
 
   - on Windows, you are probably all set
 
-  - on macOS, get [Microsoft Remote Desktop for Mac](https://rink.hockeyapp.net/apps/5e0c144289a51fca2d3bfa39ce7f2b06/)
+  - on macOS, get Microsoft Remote Desktop from the App Store
 
   - on Linux, get [rdesktop](https://wiki.ubuntuusers.de/rdesktop/)
 
@@ -94,7 +91,7 @@ background-image: url(assets/mvp_docker_captain.png)
 
 - The whole workshop is hands-on
 
-- We will see Docker EE 17.03.0 in action
+- We will see Docker EE 18.03.1-ee-1 in action
 
 - You are invited to reproduce all the demos
 
@@ -139,12 +136,12 @@ You are welcome to use the method that you feel the most comfortable with.
 
 ## Brand new versions!
 
-- Docker Enterprise Edition 17.03.0
-- Docker Compose 1.11.2
+- Docker Enterprise Edition 18.03.1-ee-1
+- Docker Compose 1.21.2
 
 .exercise[
 - Log into your Docker host through RDP (user and password is on your card)<br /><br />
-  **`dog2017-win-XX.westeurope.cloudapp.azure.com`**
+  **`dfm2018-win-XX.westeurope.cloudapp.azure.com`**
 
 - Open a terminal
 
@@ -262,7 +259,7 @@ https://github.com/Microsoft/Virtualization-Documentation
 - If there is a new version of Docker Engine available
 
 .exercise[
-- Update to latest Docker Engine CS version:
+- Update to latest Docker Engine EE version:
   ```powershell
   Install-Package -Name docker -ProviderName DockerMsftProvider -Update -Force
   Start-Service docker
@@ -274,18 +271,18 @@ https://github.com/Microsoft/Virtualization-Documentation
 
 ## Add tab completion to PowerShell
 
-- There is a PowerShell module [`posh-docker`](https://github.com/samneirinck/posh-docker) to add tab completion for docker commands.
+- There is a PowerShell module [`DockerCompletion`](https://github.com/matt9ucci/DockerCompletion) to add tab completion for docker commands.
 
 .exercise[
 
-- Install the `posh-docker` module and edit your `$PROFILE`
+- Install the `DockerCompletion` module and edit your `$PROFILE`
   ```powershell
-  Install-Module -Scope CurrentUser posh-docker
+  Install-Module DockerCompletion -Scope CurrentUser
   notepad $PROFILE
   ```
 - Add the module to the `$PROFILE` and save the file
   ```powershell
-  Import-Module posh-docker
+  Import-Module DockerCompletion
   ```
 - Open a new PowerShell terminal
 ]
@@ -304,16 +301,33 @@ background-image: url(assets/base_images.png)
 
 ## FROM microsoft/windowsservercore
   * nearly full Win32 compatible
-  * about 9 GByte
+  * 5 GByte
   * Download once, Base layer shared with all Windows images
 
 ## FROM microsoft/nanoserver
   * fast to boot
-  * about 900 MByte
+  * 418 MByte
   * software may need porting
   * No 32bit, no MSI
 
 ## ~~FROM scratch~~
+
+---
+
+background-image: url(assets/base_images.png)
+# Upcoming Windows 2019 base OS images
+
+## FROM mcr.microsoft.com/windows
+  * full Win32 compatible
+  * 3,5 GByte
+
+## FROM mcr.microsoft.com/windowsservercore
+  * nearly full Win32 compatible
+  * 1,5 GByte
+
+## FROM mcr.microsoft.com/nanoserver
+  * 94 MByte
+  * No 32bit, no MSI, no PowerShell
 
 ---
 
@@ -643,18 +657,19 @@ class: title
 
 .exercise[
 
-- Try to run this PowerShell
+- Try to run this Linux image
 
   ```powershell
-  docker container run -it microsoft/powershell
+  docker container run -it ubuntu
   ```
 
  ]
 
 --
 
-- Only Windows images can be run on Windows Docker Hosts
-- Only Linux images can be run on Linux Docker Hosts
+- Only Windows containers can be run on Windows Docker Hosts
+- Only Linux containers can be run on Linux Docker Hosts
+- But there will be LCOW to run Linux containers on Windows
 
 ---
 
@@ -672,7 +687,7 @@ class: title
 
 - Now **on your local computer**, open a browser
 
-  - http://dog2017-win-XX.westeurope.cloudapp.azure.com
+  - http://dfm2018-win-XX.westeurope.cloudapp.azure.com
 
  ]
 
@@ -800,7 +815,7 @@ start http://$(docker inspect -f '{{.NetworkSettings.Networks.nat.IPAddress}}' i
 
 - Now **on your local computer**, open a browser
 
-  - http://dog2017-win-XX.westeurope.cloudapp.azure.com
+  - http://dfm2018-win-XX.westeurope.cloudapp.azure.com
 
 ]
 
@@ -831,6 +846,8 @@ class: title
 ## Describe how to build Docker images
 
 - A `Dockerfile` is a text file with the description how to build a specific Docker image.
+
+- Put into source code version control.
 
 - Make the result repeatable by others.
 
@@ -999,7 +1016,7 @@ class: title
 
 - A small containerized helper to create TLS certs for Docker Engine
 
-http://stefanscherer.github.io/protecting-a-windows-2016-docker-engine-with-tls/
+https://stefanscherer.github.io/protecting-a-windows-2016-docker-engine-with-tls/
 
 ---
 
@@ -1039,14 +1056,14 @@ http://stefanscherer.github.io/protecting-a-windows-2016-docker-engine-with-tls/
 - Retrieve the public IP address
 
   ```powershell
-  nslookup dog2017-win-XX.westeurope.cloudapp.azure.com
+  nslookup dfm2018-win-XX.westeurope.cloudapp.azure.com
   ```
 
 - Run the dockertls container with local and public IP address (replace `x.x.x.x`)
 
   ```powershell
   docker container run --rm `
-    -e SERVER_NAME=dog2017-win-XX.westeurope.cloudapp.azure.com `
+    -e SERVER_NAME=dfm2018-win-XX.westeurope.cloudapp.azure.com `
     -e IP_ADDRESSES=$ips,x.x.x.x `
     -v "C:\ProgramData\docker:C:\ProgramData\docker" `
     -v "$env:USERPROFILE\.docker:C:\Users\ContainerAdministrator\.docker" `
@@ -1115,7 +1132,7 @@ http://stefanscherer.github.io/protecting-a-windows-2016-docker-engine-with-tls/
 - Copy client certs back to your local machine
 
   ```powershell
-  docker --tlsverify -H dog2017-win-XX.westeurope.cloudapp.azure.com:2376 version
+  docker --tlsverify -H dfm2018-win-XX.westeurope.cloudapp.azure.com:2376 version
   ```
 
 ]
@@ -1143,22 +1160,6 @@ Local folder shared in RDP session
 class: title
 
 # Networking
-
----
-
-## Networking modes
-
-- **Network Address Translation (NAT)**
-  - each container will receive an IP address from an internal, private IP prefix
-
-- **Transparent**
-  - directly connected to the physical network
-
-- **Overlay**
-  - used to connect container endpoints across multiple container hosts
-
-- **L2 Bridge**
-  - access to physical network with MAC address translation
 
 ---
 
@@ -1551,6 +1552,22 @@ class: title
 
 ---
 
+## Better: Use multi-stage builds
+
+- A `Dockerfile` with multiple `FROM` instructions
+
+- Each `FROM` starts a new stage
+
+- Only the final stage will make it into your Docker image.
+
+- Use earlier stages to build your app, eg. with a compiler
+
+- Remove the compiler dependencies with a final `FROM`
+
+https://stefanscherer.github.io/use-multi-stage-builds-for-smaller-windows-images/
+
+---
+
 ## Resources for Dockerfile on Windows
 
 - [Best practises for writing Dockerfiles](https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/#run)
@@ -1723,6 +1740,16 @@ class: title
 
 ---
 
+## Orchestrators?
+
+- Docker Swarm
+
+- Kubernetes
+
+- OpenShift
+
+---
+
 class: title
 
 # Thanks!  
@@ -1730,4 +1757,4 @@ Questions?
 
 ## Stefan Scherer [@stefscherer](https://twitter.com/stefscherer)
 
-## Dieter Reuter [@Quintus23M](https://twitter.com/Quintus23M)
+## [github.com/StefanScherer/dockerfiles-windows](https://github.com/StefanScherer/dockerfiles-windows)
