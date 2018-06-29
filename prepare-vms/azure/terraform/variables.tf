@@ -26,7 +26,11 @@ variable "admin_username" {
 }
 
 variable "admin_password" {
-  default = "DockerOnWindows2018!"
+  default = "Password1234!"
+}
+
+variable "workshop_image" {
+  default = "windows_2016_30"
 }
 
 variable "count" {

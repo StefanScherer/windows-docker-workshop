@@ -53,17 +53,14 @@ resource "azurerm_virtual_machine" "windows" {
   vm_size               = "${var.vm_size}"
 
   storage_image_reference {
-    publisher = "MicrosoftWindowsServer"
-    offer     = "WindowsServer"
-    sku       = "2016-Datacenter-with-Containers"
-    version   = "latest"
+    id = "${data.azurerm_image.workshop_image.id}"
   }
 
   storage_os_disk {
     name          = "windows-${format("%02d", count.index + 1)}-osdisk"
-    vhd_uri       = "${azurerm_storage_account.global.primary_blob_endpoint}${element(azurerm_storage_container.windows.*.id, count.index)}/disk1.vhd"
-    caching       = "ReadWrite"
-    create_option = "FromImage"
+    caching           = "ReadWrite"
+    create_option     = "FromImage"
+    managed_disk_type = "Standard_LRS"
   }
 
   os_profile {
@@ -93,7 +90,7 @@ resource "azurerm_virtual_machine" "windows" {
   }
 
   tags {
-    environment = "staging"
+    environment = "training"
   }
 }
 

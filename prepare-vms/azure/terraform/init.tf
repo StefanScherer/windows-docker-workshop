@@ -15,3 +15,8 @@ resource "azurerm_storage_account" "global" {
   name                     = "${var.account}"
   resource_group_name      = "${azurerm_resource_group.global.name}"
 }
+
+data "azurerm_image" "workshop_image" {
+  name                = "${var.workshop_image}"
+  resource_group_name = "windows-docker-workshop-images"
+}
