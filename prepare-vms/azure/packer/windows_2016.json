@@ -9,7 +9,7 @@
       "communicator": "winrm",
       "image_offer": "WindowsServer",
       "image_publisher": "MicrosoftWindowsServer",
-      "image_sku": "2016-Datacenter",
+      "image_sku": "2016-Datacenter-with-Containers",
       "location": "{{user `location`}}",
       "managed_image_name": "{{user `image_name`}}",
       "managed_image_resource_group_name": "windows-docker-workshop-images",

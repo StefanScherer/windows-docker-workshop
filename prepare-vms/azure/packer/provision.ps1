@@ -1,8 +1,4 @@
-Write-Host "provision.ps1"
-Write-Host "HostName = $($HostName)"
-
-Write-Host "USERPROFILE = $($env:USERPROFILE)"
-Write-Host "pwd = $($pwd)"
+$ErrorActionPreference = 'Stop'
 
 Write-Host Windows Updates to manual
 Cscript $env:WinDir\System32\SCregEdit.wsf /AU 1
@@ -16,6 +12,8 @@ Write-Host Do not open Server Manager at logon
 New-ItemProperty -Path HKCU:\Software\Microsoft\ServerManager -Name DoNotOpenServerManagerAtLogon -PropertyType DWORD -Value "1" -Force
 
 Write-Host Install bginfo
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
 if (!(Test-Path 'c:\Program Files\sysinternals')) {
   New-Item -Path 'c:\Program Files\sysinternals' -type directory -Force -ErrorAction SilentlyContinue
 }
