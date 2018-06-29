@@ -5,7 +5,7 @@ set -e
 apk update
 apk add jq git openssh
 
-cd packer || exit
+cd prepare-vms/azure/packer || exit
 
 PACKER_VM_SIZE=${PACKER_VM_SIZE:-Standard_D4s_v3}
 PACKER_LOCATION=${PACKER_LOCATION:-West Europe}
