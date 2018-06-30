@@ -1,2 +1,4 @@
 .terraform/
 passwords.tf
+machines.md
+machines.pdf

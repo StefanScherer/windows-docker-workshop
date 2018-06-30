@@ -39,12 +39,14 @@ iex (wget 'https://chocolatey.org/install.ps1' -UseBasicParsing)
 
 Write-Host Install editors
 choco install -y visualstudiocode
+choco install -y atom
 
 Write-Host Install Git
 choco install -y git
 
 Write-Host Install browsers
 choco install -y googlechrome
+choco install -y firefox
 
 Write-Host Install Docker Compose
 choco install -y docker-compose

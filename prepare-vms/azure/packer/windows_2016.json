@@ -28,7 +28,8 @@
   "provisioners": [
     {
       "scripts": [
-        "./provision.ps1"
+        "./provision.ps1",
+        "./openssh.ps1"
       ],
       "type": "powershell"
     },
