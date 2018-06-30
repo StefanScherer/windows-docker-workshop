@@ -4,6 +4,11 @@
       "azure_tags": {
         "circle_build_num": "{{user `circle_build_num`}}"
       },
+      "plan_info": {
+        "plan_name": "2019-datacenter",
+        "plan_product": "rs5_preview",
+        "plan_publisher": "microsoft-hyperv"
+      },
       "client_id": "{{user `client_id`}}",
       "client_secret": "{{user `client_secret`}}",
       "communicator": "winrm",
