@@ -11,4 +11,11 @@ curl -L -o .terraform/plugins/linux_amd64/terraform-provider-azurerm_v1.8.0_x4 h
 chmod +x .terraform/plugins/linux_amd64/terraform-provider-azurerm_v1.8.0_x4
 
 terraform init
+
+echo "Debug"
+echo list absolute
+ls -l /root/project/prepare-vms/azure/terraform/.terraform/plugins/linux_amd64/
+echo list relative
+ls -l .terraform/plugins/linux_amd64/
+
 terraform apply -auto-approve
