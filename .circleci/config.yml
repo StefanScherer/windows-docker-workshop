@@ -96,10 +96,6 @@ workflows:
               only:
                 - master
       - terraform:
-          requires:
-            - shellcheck
-            - packer-validate
-            - terraform-validate
           filters:
             branches:
               ignore: /.*/
