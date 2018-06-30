@@ -1,10 +1,11 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 
 password_length=12
 number=100
 username=training
 
+echo "Creating passwords.tf with $number passwords"
 i=0
 echo 'variable "admin_password" {
   default = [' > passwords.tf
@@ -29,4 +30,11 @@ echo '    "dummy"
   ]
 }' >> passwords.tf
 
-mdpdf machines.md
+exists()
+{
+  command -v "$1" >/dev/null 2>&1
+}
+
+if exists mdpdf; then
+  mdpdf machines.md
+fi
