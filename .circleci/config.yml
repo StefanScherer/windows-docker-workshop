@@ -90,6 +90,8 @@ workflows:
             - packer-validate
             - terraform-validate
           filters:
+            tags:
+              ignore: /.*/
             branches:
               only:
                 - master
