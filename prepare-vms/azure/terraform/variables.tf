@@ -9,7 +9,7 @@ variable "account" {
 }
 
 variable "dns_prefix" {
-  default = "dfmx1"
+  default = "ba"
 }
 
 variable "location" {
@@ -23,10 +23,6 @@ variable "azure_dns_suffix" {
 
 variable "admin_username" {
   default = "training"
-}
-
-variable "admin_password" {
-  default = "Password1234!"
 }
 
 variable "workshop_image" {
