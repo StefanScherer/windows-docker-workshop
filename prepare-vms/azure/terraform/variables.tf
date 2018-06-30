@@ -26,15 +26,11 @@ variable "admin_username" {
 }
 
 variable "workshop_image" {
-  default = "windows_2016_30"
+  default = "windows_2016_62"
 }
 
 variable "count" {
-  type = "map"
-
-  default = {
-    windows = "1"
-  }
+  default = "1"
 }
 
 variable "vm_size" {

@@ -57,7 +57,7 @@ resource "azurerm_virtual_machine" "windows" {
   }
 
   storage_os_disk {
-    name          = "windows-${format("%02d", count.index + 1)}-osdisk"
+    name              = "windows-${format("%02d", count.index + 1)}-osdisk"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
@@ -93,4 +93,3 @@ resource "azurerm_virtual_machine" "windows" {
     environment = "training"
   }
 }
-

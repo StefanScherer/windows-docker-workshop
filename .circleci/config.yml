@@ -108,12 +108,12 @@ workflows:
             branches:
               only:
                 - master
-      - build-windows-2019:
-          requires:
-            - shellcheck
-            - packer-validate
-            - terraform-validate
-          filters:
-            branches:
-              only:
-                - master
+      # - build-windows-2019:
+      #     requires:
+      #       - shellcheck
+      #       - packer-validate
+      #       - terraform-validate
+      #     filters:
+      #       branches:
+      #         only:
+      #           - master
