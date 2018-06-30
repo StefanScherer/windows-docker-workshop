@@ -3,7 +3,9 @@ set -e
 
 cd prepare-vms/azure/terraform
 apk add pwgen
-./create-passwords.sh
+
+number_of_machines=1
+./create-passwords.sh "$number_of_machines"
 
 # workaround until https://github.com/terraform-providers/terraform-provider-azurerm/pull/1471 got merged
 mkdir -p .terraform/plugins/linux_amd64/
@@ -18,4 +20,7 @@ ls -l /root/project/prepare-vms/azure/terraform/.terraform/plugins/linux_amd64/
 echo list relative
 ls -l .terraform/plugins/linux_amd64/
 
-terraform apply -auto-approve
+terraform apply -var "count=$number_of_machines" -auto-approve
+
+echo "Uploading machines.md to Slack"
+curl -F file=@machines.md "https://slack.com/api/files.upload?token=${SLACK_TOKEN}&channels=%40stefanscherer&pretty=1"
