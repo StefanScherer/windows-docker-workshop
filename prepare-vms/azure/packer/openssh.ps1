@@ -18,11 +18,14 @@ Push-Location C:\OpenSSH-Win64
 Write-Host "Installing OpenSSH"
 & .\install-sshd.ps1
 
-Write-Host "Installing OpenSSH key auth"
-& .\install-sshlsa.ps1
-
 Write-Host "Generating host keys"
 .\ssh-keygen.exe -A
+
+Write-Host "Fixing host file permissions"
+& .\FixHostFilePermissions.ps1 -Confirm:$false
+
+Write-Host "Fixing user file permissions"
+& .\FixUserFilePermissions.ps1 -Confirm:$false
 
 Pop-Location
 

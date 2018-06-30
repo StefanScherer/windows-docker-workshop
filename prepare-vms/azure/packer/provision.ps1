@@ -1,5 +1,8 @@
 $ErrorActionPreference = 'Stop'
 
+$docker_provider = "DockerMsftProvider"
+$docker_version = "18.03.1-ee-1"
+
 Write-Host Windows Updates to manual
 Cscript $env:WinDir\System32\SCregEdit.wsf /AU 1
 Net stop wuauserv
@@ -51,6 +54,22 @@ choco install -y firefox
 Write-Host Install Docker Compose
 choco install -y docker-compose
 
+if (Test-Path $env:ProgramFiles\docker) {
+  Write-Host Update Docker
+  Install-Package -Name docker -ProviderName $docker_provider -Verbose -Update -RequiredVersion $docker_version -Force
+} else {
+  Write-Host "Install-PackageProvider ..."
+  Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+  Write-Host "Install-Module $docker_provider ..."
+  Install-Module -Name $docker_provider -Force
+  Write-Host "Install-Package version $docker_version ..."
+  Set-PSRepository -InstallationPolicy Trusted -Name PSGallery
+  $ErrorActionStop = 'SilentlyContinue'
+  Install-Package -Name docker -ProviderName DockerProvider -RequiredVersion $docker_version -Force
+  Set-PSRepository -InstallationPolicy Untrusted -Name PSGallery
+  $env:Path = $env:Path + ";$($env:ProgramFiles)\docker"
+}
+
 Write-Host Pulling latest images
 docker pull microsoft/windowsservercore
 docker pull microsoft/nanoserver
@@ -59,9 +78,6 @@ Write-Host Pulling some application images
 docker pull microsoft/iis
 docker pull golang
 docker pull golang:nanoserver
-
-Write-Host Update Docker
-Install-Package -Name docker -ProviderName DockerMsftProvider -Verbose -Update -RequiredVersion 18.03.1-ee-1 -Force
 
 Write-Host Disable autologon
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name AutoAdminLogon -PropertyType DWORD -Value "0" -Force
