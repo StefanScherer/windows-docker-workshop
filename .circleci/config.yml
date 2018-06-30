@@ -99,15 +99,5 @@ workflows:
             - packer-validate
             - terraform-validate
           filters:
-            branches:
-              only:
-                - workshop
-      # - build-windows-2019:
-      #     requires:
-      #       - shellcheck
-      #       - packer-validate
-      #       - terraform-validate
-      #     filters:
-      #       branches:
-      #         only:
-      #           - master
+            tags:
+              only: /.*/

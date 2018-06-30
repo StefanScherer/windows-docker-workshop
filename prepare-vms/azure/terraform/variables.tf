@@ -1,15 +1,19 @@
 # Settings
 
+variable "dns_prefix" {
+  default = "ba"
+}
+
+variable "count" {
+  default = "1"
+}
+
 variable "group_name" {
-  default = "docker-on-windows-workshop"
+  default = "${var.dns_prefix}-${var.count}-windows-docker-workshop"
 }
 
 variable "account" {
-  default = "dfm2018training"
-}
-
-variable "dns_prefix" {
-  default = "ba"
+  default = "${var.dns_prefix}${var.count}training"
 }
 
 variable "location" {
@@ -27,10 +31,6 @@ variable "admin_username" {
 
 variable "workshop_image" {
   default = "windows_2016_72"
-}
-
-variable "count" {
-  default = "1"
 }
 
 variable "vm_size" {
