@@ -26,7 +26,7 @@ variable "admin_username" {
 }
 
 variable "workshop_image" {
-  default = "windows_2016_62"
+  default = "windows_2016_72"
 }
 
 variable "count" {

@@ -37,7 +37,7 @@ jobs:
       - run:
           name: Run Packer build on Azure
           command: ./prepare-vms/azure/packer/circle-build.sh
-          no_output_timeout: 3600
+          no_output_timeout: 1800
 
   terraform-validate:
     docker:
@@ -64,22 +64,7 @@ jobs:
 
       - run:
           name: Build infrastructure
-          command: |
-            cd terraform
-            terraform init
-            ./circle-build.sh
-
-      - run:
-          name: Run test
-          command: |
-            cd terraform
-            ./circle-test.sh
-
-      - run:
-          name: Destroy infrastructure
-          command: |
-            cd terraform
-            ./circle-destroy.sh
+          command: ./prepare-vms/azure/terraform/circle-build.sh
 
   build-windows-2016:
     <<: *packer
@@ -108,6 +93,15 @@ workflows:
             branches:
               only:
                 - master
+      - terraform:
+          requires:
+            - shellcheck
+            - packer-validate
+            - terraform-validate
+          filters:
+            branches:
+              only:
+                - workshop
       # - build-windows-2019:
       #     requires:
       #       - shellcheck
