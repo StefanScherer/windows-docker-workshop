@@ -99,5 +99,7 @@ workflows:
             - packer-validate
             - terraform-validate
           filters:
+            branches:
+              ignore: /.*/
             tags:
               only: /^.*-[0-9]+$/
