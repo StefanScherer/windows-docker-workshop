@@ -1,7 +1,7 @@
 # Settings
 
 variable "dns_prefix" {
-  default = "ba"
+  default = "wdw"
 }
 
 variable "count" {
@@ -9,11 +9,11 @@ variable "count" {
 }
 
 variable "group_name" {
-  default = "${var.dns_prefix}-${var.count}-windows-docker-workshop"
+  default = "windows-docker-workshop"
 }
 
 variable "account" {
-  default = "${var.dns_prefix}${var.count}training"
+  default = "wdwtraining"
 }
 
 variable "location" {

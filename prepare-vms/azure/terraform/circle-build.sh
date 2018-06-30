@@ -27,7 +27,12 @@ ls -l /root/project/prepare-vms/azure/terraform/.terraform/plugins/linux_amd64/
 echo list relative
 ls -l .terraform/plugins/linux_amd64/
 
-terraform apply -var "count=$number_of_machines" -var "dns_prefix=$dns_prefix"-auto-approve
+terraform apply \
+  -var "count=$number_of_machines" \
+  -var "dns_prefix=$dns_prefix" \
+  -var "group_name=${dns_prefix}-${number_of_machines}-windows-docker-workshop" \
+  -var "account=${dns_prefix}${number_of_machines}workshop" \
+  -auto-approve
 
 echo "Uploading machines.md to Slack"
 curl -F file=@machines.md "https://slack.com/api/files.upload?token=${SLACK_TOKEN}&channels=%40stefanscherer&pretty=1"
