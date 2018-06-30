@@ -65,7 +65,7 @@ if (Test-Path $env:ProgramFiles\docker) {
   Write-Host "Install-Package version $docker_version ..."
   Set-PSRepository -InstallationPolicy Trusted -Name PSGallery
   $ErrorActionStop = 'SilentlyContinue'
-  Install-Package -Name docker -ProviderName DockerProvider -RequiredVersion $docker_version -Force
+  Install-Package -Name docker -ProviderName $docker_provider -RequiredVersion $docker_version -Force
   Set-PSRepository -InstallationPolicy Untrusted -Name PSGallery
   $env:Path = $env:Path + ";$($env:ProgramFiles)\docker"
 }
