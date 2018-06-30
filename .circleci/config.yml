@@ -102,4 +102,4 @@ workflows:
             branches:
               ignore: /.*/
             tags:
-              only: /^.*-[0-9]+$/
+              only: /.*-.*/
