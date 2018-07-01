@@ -91,7 +91,7 @@ jobs:
 
   makepdf:
     docker:
-      - image: circleci/node:10-stretch
+      - image: node:10
 
     steps:
       - checkout
