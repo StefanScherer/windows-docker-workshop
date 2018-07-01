@@ -90,8 +90,7 @@ jobs:
             - .
 
   makepdf:
-    docker:
-      - image: node:10
+    machine: true
 
     steps:
       - checkout
