@@ -38,7 +38,7 @@ wscript "c:\Program Files\sysinternals\bginfo.vbs"
 
 
 Write-Output 'Install Chocolatey'
-iex (wget 'https://chocolatey.org/install.ps1' -UseBasicParsing)
+Invoke-WebRequest -UseBasicParsing 'https://chocolatey.org/install.ps1' -UseBasicParsing) | Invoke-Expression
 
 Write-Output 'Install editors'
 choco install -y visualstudiocode
@@ -76,7 +76,7 @@ Start-Service docker
 Write-Output 'Docker version'
 docker version
 
-$images = 
+$images =
 'microsoft/windowsservercore:ltsc2016',
 'microsoft/nanoserver:sac2016',
 'microsoft/windowsservercore',

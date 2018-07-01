@@ -9,20 +9,20 @@ function Get-HostToIP($hostname) {
   $result.AddressList | ForEach-Object {$_.IPAddressToString }
 }
 
-Write-Host "provision.ps1"
-Write-Host "HostName = $($HostName)"
+Write-Output "provision.ps1"
+Write-Output "HostName = $($HostName)"
 
 $PublicIPAddress = Get-HostToIP($HostName)
 
-Write-Host "PublicIPAddress = $($PublicIPAddress)"
-Write-Host "USERPROFILE = $($env:USERPROFILE)"
-Write-Host "pwd = $($pwd)"
+Write-Output "PublicIPAddress = $($PublicIPAddress)"
+Write-Output "USERPROFILE = $($env:USERPROFILE)"
+Write-Output "pwd = $($pwd)"
 
-Write-Host Install bginfo
+Write-Output Install bginfo
 [Environment]::SetEnvironmentVariable('FQDN', $HostName, [EnvironmentVariableTarget]::Machine)
 [Environment]::SetEnvironmentVariable('PUBIP', $PublicIPAddress, [EnvironmentVariableTarget]::Machine)
 
-Write-Host Cleaning up
+Write-Output Cleaning up
 Remove-Item C:\provision.ps1
 
 Restart-Computer
