@@ -84,6 +84,29 @@ jobs:
           name: Build infrastructure
           command: ./prepare-vms/azure/terraform/circle-build.sh
 
+      - persist_to_workspace:
+          root: /tmp/workspace
+          paths:
+            - .
+
+  makepdf:
+    docker:
+      - image: circleci/node:10-stretch
+
+    steps:
+      - checkout
+
+      - attach_workspace:
+          at: /tmp/workspace
+
+      - run:
+        name: Make PDF
+        command: |
+          cd /tmp/workspace
+          npm install -g mdpdf
+          echo "Uploading machines.pdf to Slack"
+          curl -F file=@machines.pdf "https://slack.com/api/files.upload?token=${SLACK_TOKEN}&channels=%40stefanscherer&pretty=1"
+
   build-windows-2016:
     <<: *packer
     environment:
@@ -115,7 +138,47 @@ workflows:
             branches:
               only:
                 - master
+
+  build-infrastructure:
+    jobs:
+      - shellcheck
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /.*-.*/
+      - psscriptanalyzer
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /.*-.*/
+      - packer-validate
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /.*-.*/
+      - terraform-validate
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /.*-.*/
       - terraform:
+          requires:
+            - shellcheck
+            - psscriptanalyzer
+            - packer-validate
+            - terraform-validate
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /.*-.*/
+      - makepdf:
+          requires:
+            - terraform
           filters:
             branches:
               ignore: /.*/

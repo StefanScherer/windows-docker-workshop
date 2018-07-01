@@ -13,6 +13,8 @@ cd prepare-vms/azure/terraform
 apk add pwgen
 
 ./create-passwords.sh
+mkdir -p /tmp/workspace
+cp machines.md /tmp/workspace
 
 # workaround until https://github.com/terraform-providers/terraform-provider-azurerm/pull/1471 got merged
 mkdir -p .terraform/plugins/linux_amd64/
@@ -26,6 +28,3 @@ terraform apply \
   -var "group_name=${dns_prefix}-${number_of_machines}-windows-docker-workshop" \
   -var "account=${dns_prefix}${number_of_machines}workshop" \
   -auto-approve
-
-echo "Uploading machines.md to Slack"
-curl -F file=@machines.md "https://slack.com/api/files.upload?token=${SLACK_TOKEN}&channels=%40stefanscherer&pretty=1"
