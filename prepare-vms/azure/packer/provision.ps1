@@ -36,13 +36,11 @@ $vbsScript | Out-File 'c:\Program Files\sysinternals\bginfo.vbs'
 Set-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run -Name bginfo -Value 'wscript "c:\Program Files\sysinternals\bginfo.vbs"'
 wscript "c:\Program Files\sysinternals\bginfo.vbs"
 
-
 Write-Output 'Install Chocolatey'
-Invoke-WebRequest -UseBasicParsing 'https://chocolatey.org/install.ps1' -UseBasicParsing | Invoke-Expression
+Invoke-WebRequest 'https://chocolatey.org/install.ps1' -UseBasicParsing | Invoke-Expression
 
 Write-Output 'Install editors'
 choco install -y visualstudiocode
-choco install -y atom
 
 Write-Output 'Install Git'
 choco install -y git
