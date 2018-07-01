@@ -2,8 +2,14 @@
 set -e
 
 password_length=12
-number_of_machines=60
+number_of_machines=${1:-60}
 username=training
+dns_prefix=wdw
+
+if [ ! -z "${CIRCLE_TAG}" ]; then
+  dns_prefix=${CIRCLE_TAG%%-*}
+  number_of_machines=${CIRCLE_TAG#*-}
+fi
 
 echo "Creating passwords.tf with $number_of_machines passwords"
 i=0
@@ -11,13 +17,14 @@ echo 'variable "admin_password" {
   default = [' > passwords.tf
 
 rm -f machines.md
-for password in $(pwgen $password_length $number_of_machines); do
+for password in $(pwgen $password_length "$number_of_machines"); do
   echo "    \"$password\"," >> passwords.tf
-  if [ $(($i%6)) -eq 0 ]; then
+  if [ $((i%6)) -eq 0 ]; then
     echo "# Accounts $((i+1)) - $((i+6))" >> machines.md
     echo "" >> machines.md
   fi
-  echo "| FQDN     | ba-$(printf "%02d" $((i+1))).westeurope.cloudapp.azure.com |" >> machines.md
+  # shellcheck disable=SC2129
+  echo "| FQDN     | $dns_prefix-$(printf "%02d" $((i+1))).westeurope.cloudapp.azure.com |" >> machines.md
   echo "|----------|-------------------------------------|" >> machines.md
   echo "| Username | \`$username\` |" >> machines.md
   echo "| Password | \`$password\` |" >> machines.md
