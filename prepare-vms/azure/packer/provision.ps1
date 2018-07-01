@@ -3,18 +3,18 @@ $ErrorActionPreference = 'Stop'
 $docker_provider = "DockerMsftProvider"
 $docker_version = "18.03.1-ee-1"
 
-Write-Host Windows Updates to manual
+Write-Output 'Set Windows Updates to manual'
 Cscript $env:WinDir\System32\SCregEdit.wsf /AU 1
 Net stop wuauserv
 Net start wuauserv
 
-Write-Host Disable Windows Defender
+Write-Output 'Disable Windows Defender'
 Set-MpPreference -DisableRealtimeMonitoring $true
 
-Write-Host Do not open Server Manager at logon
+Write-Output 'Do not open Server Manager at logon'
 New-ItemProperty -Path HKCU:\Software\Microsoft\ServerManager -Name DoNotOpenServerManagerAtLogon -PropertyType DWORD -Value "1" -Force
 
-Write-Host Install bginfo
+Write-Output 'Install bginfo'
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 if (!(Test-Path 'c:\Program Files\sysinternals')) {
@@ -37,32 +37,32 @@ Set-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run -Name bginf
 wscript "c:\Program Files\sysinternals\bginfo.vbs"
 
 
-Write-Host Install Chocolatey
+Write-Output 'Install Chocolatey'
 iex (wget 'https://chocolatey.org/install.ps1' -UseBasicParsing)
 
-Write-Host Install editors
+Write-Output 'Install editors'
 choco install -y visualstudiocode
 choco install -y atom
 
-Write-Host Install Git
+Write-Output 'Install Git'
 choco install -y git
 
-Write-Host Install browsers
+Write-Output 'Install browsers'
 choco install -y googlechrome
 choco install -y firefox
 
-Write-Host Install Docker Compose
+Write-Output 'Install Docker Compose'
 choco install -y docker-compose
 
 if (Test-Path $env:ProgramFiles\docker) {
-  Write-Host Update Docker
+  Write-Output Update Docker
   Install-Package -Name docker -ProviderName $docker_provider -Verbose -Update -RequiredVersion $docker_version -Force
 } else {
-  Write-Host "Install-PackageProvider ..."
+  Write-Output "Install-PackageProvider ..."
   Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
-  Write-Host "Install-Module $docker_provider ..."
+  Write-Output "Install-Module $docker_provider ..."
   Install-Module -Name $docker_provider -Force
-  Write-Host "Install-Package version $docker_version ..."
+  Write-Output "Install-Package version $docker_version ..."
   Set-PSRepository -InstallationPolicy Trusted -Name PSGallery
   $ErrorActionStop = 'SilentlyContinue'
   Install-Package -Name docker -ProviderName $docker_provider -RequiredVersion $docker_version -Force
@@ -70,19 +70,37 @@ if (Test-Path $env:ProgramFiles\docker) {
   $env:Path = $env:Path + ";$($env:ProgramFiles)\docker"
 }
 
-Write-Host Pulling latest images
-docker pull microsoft/windowsservercore
-docker pull microsoft/nanoserver
+Write-Output 'Docker version'
+docker version
 
-Write-Host Pulling some application images
-docker pull microsoft/iis
-docker pull golang
-docker pull golang:nanoserver
+$images = 
+'microsoft/windowsservercore:ltsc2016',
+'microsoft/nanoserver:sac2016',
+'microsoft/windowsservercore',
+'microsoft/nanoserver',
+'microsoft/iis',
+'golang',
+'golang:nanoserver',
+'microsoft/dotnet-framework:4.7.2-sdk',
+'microsoft/dotnet-framework:4.7.2-runtime',
+'microsoft/dotnet:2.0-sdk-nanoserver-sac2016',
+'microsoft/dotnet:2.0-runtime-nanoserver-sac2016',
+'microsoft/aspnetcore:2.0-nanoserver-sac2016',
+'microsoft/iis:nanoserver-sac2016',
+'microsoft/aspnet:4.7.2-windowsservercore-ltsc2016',
+'microsoft/mssql-server-windows-express:2016-sp1',
+'nats:1.1.0-nanoserver'
 
-Write-Host Disable autologon
+Write-Output 'Pulling images'
+foreach ($tag in $images) {
+    Write-Output "  Pulling image $tag"
+    & docker image pull $tag
+}
+
+Write-Output 'Disable autologon'
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name AutoAdminLogon -PropertyType DWORD -Value "0" -Force
 
-Write-Host Install all Windows Updates
+Write-Output 'Install all Windows Updates'
 Get-Content C:\windows\system32\en-us\WUA_SearchDownloadInstall.vbs | ForEach-Object {
   $_ -replace 'confirm = msgbox.*$', 'confirm = vbNo'
 } | Out-File $env:TEMP\WUA_SearchDownloadInstall.vbs
