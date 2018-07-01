@@ -16,6 +16,9 @@ apk add pwgen
 mkdir -p /tmp/workspace
 cp machines.md /tmp/workspace
 
+echo "DEBUG!!"
+exit 0
+
 # workaround until https://github.com/terraform-providers/terraform-provider-azurerm/pull/1471 got merged
 mkdir -p .terraform/plugins/linux_amd64/
 curl -L -o .terraform/plugins/linux_amd64/terraform-provider-azurerm_v1.8.0_x4 https://github.com/StefanScherer/terraform-provider-azurerm/releases/download/v1.8.0-sensitive/terraform-provider-azurerm
