@@ -38,7 +38,7 @@ wscript "c:\Program Files\sysinternals\bginfo.vbs"
 
 
 Write-Output 'Install Chocolatey'
-Invoke-WebRequest -UseBasicParsing 'https://chocolatey.org/install.ps1' -UseBasicParsing) | Invoke-Expression
+Invoke-WebRequest -UseBasicParsing 'https://chocolatey.org/install.ps1' -UseBasicParsing | Invoke-Expression
 
 Write-Output 'Install editors'
 choco install -y visualstudiocode
