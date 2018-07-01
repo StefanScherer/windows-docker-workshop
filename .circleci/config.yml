@@ -12,6 +12,24 @@ jobs:
           name: Run Shellcheck
           command: shellcheck -s bash docs/*.sh prepare-vms/azure/*.sh prepare-vms/azure/packer/*.sh
 
+  psscriptanalyzer:
+    docker:
+      - image: microsoft/powershell
+    
+    steps:
+      - checkout
+      
+      - run:
+          name: Run PSScriptAnalyzer
+          command: |
+            pwsh -c 'Install-Module PSScriptAnalyzer -Force;
+              $Results = Invoke-ScriptAnalyzer -Path . -Recurse -Severity Warning;
+              $Results
+              if ($Results) {
+                Throw "Test failed. PSScriptAnalyzer found issues."
+              }
+            '
+
   packer-validate:
     docker:
       - image: hashicorp/packer:1.2.4
@@ -82,11 +100,13 @@ workflows:
   test-and-build:
     jobs:
       - shellcheck
+      - psscriptanalyzer
       - packer-validate
       - terraform-validate
       - build-windows-2016:
           requires:
             - shellcheck
+            - psscriptanalyzer
             - packer-validate
             - terraform-validate
           filters:
