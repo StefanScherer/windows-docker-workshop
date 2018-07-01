@@ -1042,7 +1042,7 @@ https://stefanscherer.github.io/protecting-a-windows-2016-docker-engine-with-tls
 
   ```powershell
   $ips = ((Get-NetIPAddress -AddressFamily IPv4).IPAddress) -Join ','
-  Write-Host $ips
+  Write-Output $ips
   ```
 
 ]

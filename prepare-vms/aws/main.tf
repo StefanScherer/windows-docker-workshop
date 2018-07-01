@@ -82,39 +82,39 @@ Start-Transcript -Path C:\provision.log
 
 $ProgressPreference = 'SilentlyContinue'
 
-Write-Host Set Password
+Write-Output Set Password
 netsh advfirewall firewall add rule name="WinRM in" protocol=TCP dir=in profile=any localport=5985 remoteip=any localip=any action=allow
 $admin = [adsi]("WinNT://./administrator, user")
 $admin.psbase.invoke("SetPassword", "${var.admin_password[count.index]}")
 
-Write-Host Enable Remote Desktop
+Write-Output Enable Remote Desktop
 set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -Value 0
 Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
 set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 0
 
-Write-Host Disable Windows Defender
+Write-Output Disable Windows Defender
 Set-MpPreference -DisableRealtimeMonitoring $true
 
 $PublicIPAddress = invoke-restmethod -uri http://169.254.169.254/latest/meta-data/public-ipv4
 $HostName = invoke-restmethod -uri http://169.254.169.254/latest/meta-data/public-hostname
 
-Write-Host "HostName = $($HostName)"
-Write-Host "PublicIPAddress = $($PublicIPAddress)"
-Write-Host "USERPROFILE = $($env:USERPROFILE)"
-Write-Host "pwd = $($pwd)"
+Write-Output "HostName = $($HostName)"
+Write-Output "PublicIPAddress = $($PublicIPAddress)"
+Write-Output "USERPROFILE = $($env:USERPROFILE)"
+Write-Output "pwd = $($pwd)"
 
-Write-Host Windows Updates to manual
+Write-Output Windows Updates to manual
 Cscript $env:WinDir\System32\SCregEdit.wsf /AU 1
 Net stop wuauserv
 Net start wuauserv
 
-Write-Host Install Docker EE 17-03-0-ee
+Write-Output Install Docker EE 17-03-0-ee
 Stop-Service docker
 wget -outfile $env:TEMP\docker-17-03-0-ee.zip "https://dockermsft.blob.core.windows.net/dockercontainer/docker-17-03-0-ee.zip"
 Expand-Archive -Path $env:TEMP\docker-17-03-0-ee.zip -DestinationPath $env:ProgramFiles -Force
 Remove-Item $env:TEMP\docker-17-03-0-ee.zip
 
-Write-Host Activate experimental features
+Write-Output Activate experimental features
 $daemonJson = "$env:ProgramData\docker\config\daemon.json"
 $config = @{}
 if (Test-Path $daemonJson) {
@@ -125,7 +125,7 @@ $config | ConvertTo-Json | Set-Content $daemonJson -Encoding Ascii
 Start-Service docker
 
 $ips = ((Get-NetIPAddress -AddressFamily IPv4).IPAddress) -Join ','
-Write-Host "Creating certs for $ips,$PublicIPAddress"
+Write-Output "Creating certs for $ips,$PublicIPAddress"
 if (!(Test-Path $env:USERPROFILE\.docker)) {
   mkdir $env:USERPROFILE\.docker
 }
