@@ -23,7 +23,7 @@ jobs:
           name: Run PSScriptAnalyzer
           command: |
             pwsh -c 'Install-Module PSScriptAnalyzer -Force;
-              $Results = Invoke-ScriptAnalyzer -Path . -Recurse -Severity Warning;
+              $Results = Invoke-ScriptAnalyzer -Path . -Recurse;
               $Results
               if ($Results) {
                 Throw "Test failed. PSScriptAnalyzer found issues."
