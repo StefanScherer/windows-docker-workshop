@@ -70,6 +70,9 @@ if (Test-Path $env:ProgramFiles\docker) {
   $env:Path = $env:Path + ";$($env:ProgramFiles)\docker"
 }
 
+Write-Output 'Staring Docker service'
+Start-Service docker
+
 Write-Output 'Docker version'
 docker version
 
