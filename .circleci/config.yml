@@ -103,9 +103,10 @@ jobs:
           command: |
             cd /tmp/workspace
             npm install -g mdpdf
-            mdpdf machines.md
-            echo "Uploading machines.pdf to Slack"
-            curl -F file=@machines.pdf "https://slack.com/api/files.upload?token=${SLACK_TOKEN}&channels=%40stefanscherer&pretty=1"
+            cp machines.md ${CIRCLE_TAG}-machines.md
+            mdpdf ${CIRCLE_TAG}-machines.md
+            echo "Uploading ${CIRCLE_TAG}-machines.pdf to Slack"
+            curl -F file=@${CIRCLE_TAG}-machines.pdf "https://slack.com/api/files.upload?token=${SLACK_TOKEN}&channels=%40stefanscherer&pretty=1"
 
   build-windows-2016:
     <<: *packer
