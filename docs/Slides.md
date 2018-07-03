@@ -10,6 +10,8 @@ background-image: url(assets/mvp_docker_captain.png)
 
 - Hello! I am
   Stefan ([@stefscherer](https://twitter.com/stefscherer))
+- I work at SEAL Systems
+- My open source lives at [github.com/StefanScherer](https://github.com/StefanScherer)
 
 ---
 
@@ -141,7 +143,7 @@ You are welcome to use the method that you feel the most comfortable with.
 
 .exercise[
 - Log into your Docker host through RDP (user and password is on your card)<br /><br />
-  **`dfm2018-win-XX.westeurope.cloudapp.azure.com`**
+  **`dowba-XX.westeurope.cloudapp.azure.com`**
 
 - Open a terminal
 
@@ -687,7 +689,7 @@ class: title
 
 - Now **on your local computer**, open a browser
 
-  - http://dfm2018-win-XX.westeurope.cloudapp.azure.com
+  - http://dowba-XX.westeurope.cloudapp.azure.com
 
  ]
 
@@ -815,7 +817,7 @@ start http://$(docker inspect -f '{{.NetworkSettings.Networks.nat.IPAddress}}' i
 
 - Now **on your local computer**, open a browser
 
-  - http://dfm2018-win-XX.westeurope.cloudapp.azure.com
+  - http://dowba-XX.westeurope.cloudapp.azure.com
 
 ]
 
@@ -1056,14 +1058,14 @@ https://stefanscherer.github.io/protecting-a-windows-2016-docker-engine-with-tls
 - Retrieve the public IP address
 
   ```powershell
-  nslookup dfm2018-win-XX.westeurope.cloudapp.azure.com
+  nslookup dowba-XX.westeurope.cloudapp.azure.com
   ```
 
 - Run the dockertls container with local and public IP address (replace `x.x.x.x`)
 
   ```powershell
   docker container run --rm `
-    -e SERVER_NAME=dfm2018-win-XX.westeurope.cloudapp.azure.com `
+    -e SERVER_NAME=dowba-XX.westeurope.cloudapp.azure.com `
     -e IP_ADDRESSES=$ips,x.x.x.x `
     -v "C:\ProgramData\docker:C:\ProgramData\docker" `
     -v "$env:USERPROFILE\.docker:C:\Users\ContainerAdministrator\.docker" `
@@ -1132,7 +1134,7 @@ https://stefanscherer.github.io/protecting-a-windows-2016-docker-engine-with-tls
 - Copy client certs back to your local machine
 
   ```powershell
-  docker --tlsverify -H dfm2018-win-XX.westeurope.cloudapp.azure.com:2376 version
+  docker --tlsverify -H dowba-XX.westeurope.cloudapp.azure.com:2376 version
   ```
 
 ]
@@ -1744,9 +1746,34 @@ class: title
 
 - Docker Swarm
 
+Work in progress:
+
 - Kubernetes
 
 - OpenShift
+
+...
+
+---
+
+## Workhop done. Now where to build Windows containers?
+
+- Windows 10
+  - Docker 4 Windows (using Hyper-V)
+
+- Use Azure
+  - Windows Server 2016, 1709, 1803, 2019 preview
+
+- Use a local VM on Linux/Mac/Windows
+  - [github.com/StefanScherer/windows-docker-machine](https://github.com/StefanScherer/windows-docker-machine)
+
+---
+
+## Further Windows related resources
+
+- Follow Elton Stoneman on Twitter [@EltonStoneman](https://twitter.com/EltonStoneman)
+
+- Another Docker on Windows workshop: [https://dwwx.space/](https://dwwx.space/)
 
 ---
 
@@ -1755,6 +1782,6 @@ class: title
 # Thanks!  
 Questions?
 
-## Stefan Scherer [@stefscherer](https://twitter.com/stefscherer)
+## [@stefscherer](https://twitter.com/stefscherer)
 
-## [github.com/StefanScherer/dockerfiles-windows](https://github.com/StefanScherer/dockerfiles-windows)
+## [github.com/StefanScherer](https://github.com/StefanScherer)
