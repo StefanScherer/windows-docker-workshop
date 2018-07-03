@@ -2,7 +2,7 @@
 
 You can prepare the Windows Server 2016 VM's with one of these Terraform templates.
 
-- AWS
+- AWS (outdated)
 - Azure
 
 ## Full automated build
