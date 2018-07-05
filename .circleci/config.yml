@@ -142,12 +142,12 @@ workflows:
 
   build-infrastructure:
     jobs:
-      # - shellcheck:
-      #     filters:
-      #       branches:
-      #         ignore: /.*/
-      #       tags:
-      #         only: /.*-.*/
+      - shellcheck:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /.*-.*/
       - psscriptanalyzer:
           filters:
             branches:
@@ -168,7 +168,7 @@ workflows:
               only: /.*-.*/
       - terraform:
           requires:
-            # - shellcheck
+            - shellcheck
             - psscriptanalyzer
             - packer-validate
             - terraform-validate
