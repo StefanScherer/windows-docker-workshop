@@ -1066,8 +1066,8 @@ https://stefanscherer.github.io/protecting-a-windows-2016-docker-engine-with-tls
 
   ```powershell
   docker container run --rm `
-    -e SERVER_NAME=dowba-XX.westeurope.cloudapp.azure.com `
-    -e IP_ADDRESSES=$ips,x.x.x.x `
+    -e SERVER_NAME=$env:FQDN `
+    -e IP_ADDRESSES=$ips,$env:PUBIP `
     -v "C:\ProgramData\docker:C:\ProgramData\docker" `
     -v "$env:USERPROFILE\.docker:C:\Users\ContainerAdministrator\.docker" `
     stefanscherer/dockertls-windows
