@@ -10,8 +10,9 @@ background-image: url(assets/mvp_docker_captain.png)
 
 - Hello! I am
   Stefan ([@stefscherer](https://twitter.com/stefscherer))
-- I work at SEAL Systems
-- My open source lives at [github.com/StefanScherer](https://github.com/StefanScherer)
+- I work at [sealsystems.de](https://sealsystems.de)
+- I do open source at [github.com/StefanScherer](https://github.com/StefanScherer)
+- I blog [stefanscherer.github.io](http://stefanscherer.github.io/)
 
 ---
 
@@ -1705,7 +1706,7 @@ class: title
 
 ```Dockerfile
 # escape=`
-FROM stefanscherer/node-windows:7.7.3-nano
+FROM stefanscherer/node-windows:10
 
 RUN npm install -g nodemon
 
@@ -1724,7 +1725,7 @@ CMD ["nodemon.cmd", "--debug=5858", "app.js"]
 
 ## Third-party volume driver plugins
 
-- [Tech Preview: Windows Containers Docker Volume plugin from NimbleStorage](https://connect.nimblestorage.com/community/app-integration/blog/2017/03/20/tech-preview-windows-containers-docker-volume-plugin)
+- [HPE Nimble Storage Volume driver and plugin](https://www.hpe.com/de/de/storage/containers.html)
 
 ---
 
@@ -1761,10 +1762,14 @@ Work in progress:
 - Windows 10
   - Docker 4 Windows (using Hyper-V)
 
-- Use Azure
+- Azure
   - Windows Server 2016, 1709, 1803, 2019 preview
 
-- Use a local VM on Linux/Mac/Windows
+- AppVeyor CI
+  - [github.com/StefanScherer/dockerfiles-windows](https://github.com/StefanScherer/dockerfiles-windows/pull/344) - collection
+  - [github.com/StefanScherer/whoami](https://github.com/StefanScherer/whoami) - Multi-arch images
+  
+- In a local VM on Linux/Mac/Windows
   - [github.com/StefanScherer/windows-docker-machine](https://github.com/StefanScherer/windows-docker-machine)
 
 ---
@@ -1773,7 +1778,11 @@ Work in progress:
 
 - Follow Elton Stoneman on Twitter [@EltonStoneman](https://twitter.com/EltonStoneman)
 
-- Another Docker on Windows workshop: [https://dwwx.space/](https://dwwx.space/)
+- Another Docker on Windows workshop
+  - [https://dwwx.space/](https://dwwx.space/)
+
+- Windows related Docker Labs
+  - [https://github.com/docker/labs/tree/master/windows](https://github.com/docker/labs/tree/master/windows)
 
 ---
 
