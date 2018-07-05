@@ -1121,6 +1121,27 @@ https://stefanscherer.github.io/protecting-a-windows-2016-docker-engine-with-tls
 
 ---
 
+# Run Portainer
+
+.exercise[
+
+- Get IP address of Ethernet adapter vEthernet (HNS Internal NIC)
+
+  ```powershell
+  ipconfig
+  ```
+
+- Run Portainer as Windows container
+
+  ```powershell
+  docker run -d -p 9000:9000 --name portainer --restart always `
+    -v $env:USERPROFILE\.docker:C:\certs portainer/portainer `
+    -H tcp://172.x.x.x:2376 --tlsverify
+  ```
+]
+
+---
+
 ## Prepare remote access
 
 .exercise[
