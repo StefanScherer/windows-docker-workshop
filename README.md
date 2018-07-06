@@ -23,6 +23,7 @@ This is the material for the workshop "Getting started with Docker on Windows Se
 ## Past workshops
 
 - [DevOps Gathering 2017](https://devops-gathering.io/workshops/Getting-started-with-Docker-on-Windows-Server-2016/), Bochum, Germany, 2017-03-23
+- [Docker Franken Meetup](https://www.meetup.com/de-DE/Docker-Bamberg/events/251391306/), 2018-07-05
 
 ## Running the workshop
 
