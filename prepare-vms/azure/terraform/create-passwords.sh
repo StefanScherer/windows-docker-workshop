@@ -24,7 +24,7 @@ for password in $(pwgen $password_length "$number_of_machines"); do
     echo "" >> machines.md
   fi
   # shellcheck disable=SC2129
-  echo "| FQDN     | $dns_prefix-$(printf "%02d" $((i+1))).westeurope.cloudapp.azure.com |" >> machines.md
+  echo "| FQDN     | $dns_prefix-$(printf "%02d" $((i+1))).westus.cloudapp.azure.com |" >> machines.md
   echo "|----------|-------------------------------------|" >> machines.md
   echo "| Username | \`$username\` |" >> machines.md
   echo "| Password | \`$password\` |" >> machines.md
