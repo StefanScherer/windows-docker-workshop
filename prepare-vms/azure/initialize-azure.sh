@@ -1,6 +1,6 @@
 #!/bin/bash
-resource_group=windows-docker-workshop-images
-region="West Europe"
+resource_group=chocolateyfest-docker-workshop-images
+region="West US"
 aadClientName=windows-docker-workshop-packer
 
 echo "Creating image resource group $resource_group"

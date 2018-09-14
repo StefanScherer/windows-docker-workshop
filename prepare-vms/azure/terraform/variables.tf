@@ -9,7 +9,7 @@ variable "count" {
 }
 
 variable "group_name" {
-  default = "windows-docker-workshop"
+  default = "chocolateyfest-docker-workshop"
 }
 
 variable "account" {
@@ -17,7 +17,7 @@ variable "account" {
 }
 
 variable "location" {
-  default = "westeurope"
+  default = "westus"
 }
 
 variable "azure_dns_suffix" {
