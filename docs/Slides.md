@@ -144,7 +144,7 @@ You are welcome to use the method that you feel the most comfortable with.
 
 .exercise[
 - Log into your Docker host through RDP (user and password is on your card)<br /><br />
-  **`choco-XX.westus.cloudapp.azure.com`**
+  **`choco-XX.westus2.cloudapp.azure.com`**
 
 - Open a terminal
 
@@ -690,7 +690,7 @@ class: title
 
 - Now **on your local computer**, open a browser
 
-  - http://choco-XX.westus.cloudapp.azure.com
+  - http://choco-XX.westus2.cloudapp.azure.com
 
  ]
 
@@ -818,7 +818,7 @@ start http://$(docker inspect -f '{{.NetworkSettings.Networks.nat.IPAddress}}' i
 
 - Now **on your local computer**, open a browser
 
-  - http://choco-XX.westus.cloudapp.azure.com
+  - http://choco-XX.westus2.cloudapp.azure.com
 
 ]
 
@@ -1059,7 +1059,7 @@ https://stefanscherer.github.io/protecting-a-windows-2016-docker-engine-with-tls
 - Retrieve the public IP address
 
   ```powershell
-  nslookup choco-XX.westus.cloudapp.azure.com
+  nslookup choco-XX.westus2.cloudapp.azure.com
   ```
 
 - Run the dockertls container with local and public IP address (replace `x.x.x.x`)
@@ -1156,7 +1156,7 @@ https://stefanscherer.github.io/protecting-a-windows-2016-docker-engine-with-tls
 - Copy client certs back to your local machine
 
   ```powershell
-  docker --tlsverify -H choco-XX.westus.cloudapp.azure.com:2376 version
+  docker --tlsverify -H choco-XX.westus2.cloudapp.azure.com:2376 version
   ```
 
 ]
