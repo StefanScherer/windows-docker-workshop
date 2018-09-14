@@ -1,7 +1,7 @@
 $ErrorActionPreference = 'Stop'
 
 $docker_provider = "DockerMsftProvider"
-$docker_version = "18.03.1-ee-1"
+$docker_version = "18.03.1-ee-3"
 
 Write-Output 'Set Windows Updates to manual'
 Cscript $env:WinDir\System32\SCregEdit.wsf /AU 1
