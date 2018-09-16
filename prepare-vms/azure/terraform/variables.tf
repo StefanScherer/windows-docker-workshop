@@ -13,7 +13,7 @@ variable "group_name" {
 }
 
 variable "account" {
-  default = "wdwtraining"
+  default = "chocotraining"
 }
 
 variable "location" {
@@ -30,7 +30,7 @@ variable "admin_username" {
 }
 
 variable "workshop_image" {
-  default = "windows_2016_168"
+  default = "windows_2016_348"
 }
 
 variable "vm_size" {
