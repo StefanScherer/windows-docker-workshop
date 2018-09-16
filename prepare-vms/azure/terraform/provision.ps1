@@ -36,6 +36,10 @@ $Shortcut.TargetPath = "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.ex
 $shortcut.WorkingDirectory = "$Home"
 $Shortcut.Save()
 
+# Run some containers
+docker run microsoft/nanoserver cmd
+docker run microsoft/windowsservercore cmd
+
 Write-Output Cleaning up
 Remove-Item C:\provision.ps1
 
