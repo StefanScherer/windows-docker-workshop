@@ -37,8 +37,8 @@ $shortcut.WorkingDirectory = "$Home"
 $Shortcut.Save()
 
 # Run some containers
-docker run microsoft/nanoserver cmd
-docker run microsoft/windowsservercore cmd
+# docker run microsoft/nanoserver cmd
+# docker run microsoft/windowsservercore cmd
 
 Write-Output Cleaning up
 Remove-Item C:\provision.ps1
