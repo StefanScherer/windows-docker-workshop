@@ -1,5 +1,7 @@
 Start-Transcript -Path C:\provision.log
 
+net user vagrant /delete
+
 Set-MpPreference -DisableRealtimeMonitoring $true
 
 New-ItemProperty -Path HKCU:\Software\Microsoft\ServerManager -Name DoNotOpenServerManagerAtLogon -PropertyType DWORD -Value "1" -Force
