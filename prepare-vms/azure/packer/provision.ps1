@@ -43,7 +43,7 @@ Write-Output 'Install Chocolatey'
 Invoke-WebRequest 'https://chocolatey.org/install.ps1' -UseBasicParsing | Invoke-Expression
 
 Write-Output 'Install editors'
-choco install -y visualstudiocode
+choco install -y vscode
 
 Write-Output 'Install Git'
 choco install -y git
