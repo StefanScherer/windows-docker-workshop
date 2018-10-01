@@ -34,7 +34,7 @@ This is the material for the workshop "Getting started with Docker on Windows Se
 
 ## Problems? Questions? Feedback welcome
 
-- I you have problems, found a bug or have questions, don't hesitate to contact me.
+- If you have problems, found a bug or have questions, don't hesitate to contact me.
 - Open an issue in this repo or send me a pull request.
 
 Have fun!
