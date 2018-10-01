@@ -2,7 +2,6 @@
 
 You can prepare the Windows Server 2016 VM's with one of these Terraform templates.
 
-- AWS (outdated)
 - Azure
 
 ## Full automated build
@@ -18,4 +17,3 @@ I've implemented a full automated build to run a Windows Docker Workshop very ea
 - A Terraform build creates the 40 VM's with random passwords.
 - A Slack notification is sent with all credentials.
 - Print the credentials for each attendee and run the workshop :-)
-
