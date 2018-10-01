@@ -13,7 +13,7 @@ packer build
 cd terraform
 terraform init
 terraform plan
-terraform apply -var 'count={ windows=3 }'
+terraform apply -var 'count=3'
 ```
 
 ## Destroy
