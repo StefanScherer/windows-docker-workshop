@@ -13,8 +13,10 @@ cd prepare-vms/azure/terraform
 apk add pwgen
 
 ./create-passwords.sh
-mkdir -p /tmp/workspace
-cp machines.md /tmp/workspace
+if [ -f machines.md ]; then
+  mkdir -p /tmp/workspace
+  cp machines.md /tmp/workspace
+fi
 
 terraform init
 terraform apply \
