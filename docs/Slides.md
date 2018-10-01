@@ -23,9 +23,7 @@ background-image: url(assets/mvp_docker_captain.png)
 -->
 
 .small[
-- 17:00-17:30 get together with some Pizza
-- 17:30-21:30 hands-on workshop
-- 21:30-      get some more Pizza
+- 6:30pm - 9:30pm hands-on workshop
 ]
 
 <!--
@@ -42,7 +40,7 @@ background-image: url(assets/mvp_docker_captain.png)
 
 - Docker Fundamentals
 
-- Setup Docker Engine on Windows Server 2016
+- Setup Docker Engine on Windows Server 2019
 
 - Learn about the base OS images
 
@@ -187,7 +185,7 @@ background-image: url(assets/what_is_a_container.png)
   distributions
 
 - Containers native to<br/>
-  Windows Server 2016
+  Windows Server 2019
 
 ---
 
@@ -199,6 +197,8 @@ class: title
 
 ## Install Docker
 
+- **You can skip this step with the prepared workshop machines.**
+
 - Install the Containers feature
 
 - Install and start the Docker service
@@ -207,7 +207,8 @@ class: title
 - Install Docker and feature with Microsoft's package:
   ```powershell
   Install-Module -Name DockerMsftProvider -Repository PSGallery -Force
-  Install-Package -Name docker -ProviderName DockerMsftProvider
+  Find-Package -ProviderName DockerMsftProvider -AllVersions
+  Install-Package -Name docker -ProviderName DockerMsftProvider -Min 18.03.1-ee-3
   Restart-Computer -Force
   ```
 
@@ -1268,7 +1269,7 @@ background-image: url(assets/compose.png)
 ## Installing Docker Compose
 
 - Docker for Mac/Docker for Windows already has Docker Compose installed
-- Installation on Windows Server 2016
+- Installation on Windows Server 2019
 
 .exercise[
 
@@ -1784,7 +1785,7 @@ Work in progress:
   - Docker 4 Windows (using Hyper-V)
 
 - Azure
-  - Windows Server 2016, 1709, 1803, 2019 preview
+  - Windows Server 2016, 1709, 1803, **2019**
 
 - AppVeyor CI
   - [github.com/StefanScherer/dockerfiles-windows](https://github.com/StefanScherer/dockerfiles-windows/pull/344) - collection
