@@ -39,10 +39,9 @@ $shortcut.WorkingDirectory = "$Home"
 $Shortcut.Save()
 
 # Run some containers
-docker run --rm mcr.microsoft.com/windowsservercore-insider:10.0.17744.1001 cmd
-docker run --rm mcr.microsoft.com/nanoserver-insider:10.0.17744.1001 cmd
-docker run --rm mcr.microsoft.com/windows-insider:10.0.17744.1001 cmd
-
+docker run --rm mcr.microsoft.com/windows/servercore:ltsc2019 cmd
+docker run --rm mcr.microsoft.com/windows/nanoserver:1809 cmd
+# docker run --rm mcr.microsoft.com/windows-insider:10.0.17744.1001 cmd
 
 Write-Output Cleaning up
 Remove-Item C:\provision.ps1
