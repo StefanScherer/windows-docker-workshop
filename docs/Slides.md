@@ -44,15 +44,13 @@ background-image: url(assets/mvp_docker_captain.png)
 
 - Learn about the base OS images
 
-- Secure remote Docker access via TLS
-
 - Networking
 
 - Dockerfile best practices
 
 - Persisting data using volumes
 
-- Dockerizing a Windows application into containers
+- Learn basics about Docker Swarm mode
 
 ---
 
@@ -109,9 +107,7 @@ background-image: url(assets/connect_rdp_docker.png)
 
 ## We will (mostly) interact with RDP only
 
-- We can work through the RDP session
-
-- When we have the TLS certs, we can do it from local machine through the Docker API
+- We will work in the RDP session
 
 ---
 background-image: url(assets/powershell.png)
@@ -138,7 +134,7 @@ You are welcome to use the method that you feel the most comfortable with.
 
 .exercise[
 - Log into your Docker host through RDP (user and password is on your card)<br /><br />
-  **`choco-XX.westus2.cloudapp.azure.com`**
+  **`dowcf-XX.westus2.cloudapp.azure.com`**
 
 - Open a terminal
 
@@ -688,7 +684,7 @@ class: title
 
 - Now **on your local computer**, open a browser
 
-  - http://choco-XX.westus2.cloudapp.azure.com
+  - http://dowcf-XX.westus2.cloudapp.azure.com
 
  ]
 
@@ -696,21 +692,14 @@ class: title
 
 ## Windows Containers now does loopback
 
-- At the moment you can't reach the published port 80 from the Docker Host
+- With Windows Server 2019 we can use `localhost` to access published ports.
 
 .exercise[
 
-- Try to open the web site **from the Docker Host**
+- Open the web site **from the Docker Host**
 
   ```powershell
   start http://localhost
-  ```
-
-- Or use the container IP address from the Docker Host
-
-  ```powershell
-  docker container inspect -f '{{.NetworkSettings.Networks.nat.IPAddress}}' iis
-start http://$(docker inspect -f '{{.NetworkSettings.Networks.nat.IPAddress}}' iis)
   ```
 
  ]
@@ -809,7 +798,7 @@ start http://$(docker inspect -f '{{.NetworkSettings.Networks.nat.IPAddress}}' i
 
 - Now **on your local computer**, open a browser
 
-  - http://choco-XX.westus2.cloudapp.azure.com
+  - http://dowcf-XX.westus2.cloudapp.azure.com
 
 ]
 
@@ -982,136 +971,6 @@ https://docs.docker.com/engine/reference/builder/#/escape
 
 ---
 
-class: title
-
-# Secure remote
-# Docker access via TLS
-
----
-
-## Working with Docker remote API
-
-- Docker remote API on port 2375 is not encrypted
-
-- Protect your Docker Engine
-
-  - nobody else from the Internet can connect to it
-  - no other Container can connect to it
-
-- Use TLS certificates for client and server
-
----
-
-## DockerTLS
-
-- OpenBSD LibreSSL tools
-
-- PowerShell script to automate TLS cert generation
-
-- A small containerized helper to create TLS certs for Docker Engine
-
-https://stefanscherer.github.io/protecting-a-windows-2016-docker-engine-with-tls/
-
----
-
-## DockerTLS
-
-![dockertls](assets/dockertls.png)
-
----
-
-## Preparation steps
-
-.exercise[
-
-- Open a PowerShell terminal as administrator
-
-- Create a folder for the client certs
-
-  ```powershell
-  mkdir ~\.docker
-  ```
-
-- Retrieve all local IP addresses
-
-  ```powershell
-  $ips = ((Get-NetIPAddress -AddressFamily IPv4).IPAddress) -Join ','
-  Write-Output $ips
-  ```
-
-]
-
----
-
-## Run DockerTLS
-
-.exercise[
-
-- Retrieve the public IP address
-
-  ```powershell
-  nslookup choco-XX.westus2.cloudapp.azure.com
-  ```
-
-- Run the dockertls container with local and public IP address (replace `x.x.x.x`)
-
-  ```powershell
-  docker container run --rm `
-    -e SERVER_NAME=$env:FQDN `
-    -e IP_ADDRESSES=$ips,$env:PUBIP `
-    -v "C:\ProgramData\docker:C:\ProgramData\docker" `
-    -v "$env:USERPROFILE\.docker:C:\Users\ContainerAdministrator\.docker" `
-    chocolateyfest/dockertls
-  ```
-
-]
-
----
-
-## Check what you have created
-
-.exercise[
-
-- Check client certs
-
-  ```powershell
-  dir ~\.docker
-  ```
-
-- Check server certs and `daemon.json`
-
-  ```powershell
-  dir C:\ProgramData\docker\certs.d
-  cat C:\ProgramData\docker\config\daemon.json
-  ```
-
-]
-
----
-
-## Activate TLS and test connection
-
-.exercise[
-
-- Activate the changes in `daemon.json`
-
-  ```powershell
-  Stop-Service docker
-  dockerd --unregister-service   # get rid of -H options in command line
-  dockerd --register-service
-  Start-Service docker
-  ```
-
-- Test the TLS protected connection
-
-  ```powershell
-  docker --tlsverify -H 127.0.0.1:2376 version
-  ```
-
-]
-
----
-
 # Run Portainer
 
 .exercise[
@@ -1125,46 +984,9 @@ https://stefanscherer.github.io/protecting-a-windows-2016-docker-engine-with-tls
     -v //./pipe/docker_engine://./pipe/docker_engine `
     chocolateyfest/portainer
   ```
+  
+- Open the browser at http://localhost:9000
 ]
-
----
-
-## Prepare remote access
-
-.exercise[
-
-- Open firewall
-
-  ```powershell
-  & netsh advfirewall firewall add rule name="Docker TLS" `
-      dir=in action=allow protocol=TCP localport=2376
-  ```
-
-- Copy client certs back to your local machine
-
-  ```powershell
-  docker --tlsverify -H choco-XX.westus2.cloudapp.azure.com:2376 version
-  ```
-
-]
-
----
-
-![rdp local resources](assets/rdp-osx.png)
-
-Microsoft Remote Desktop Beta App on OSX
-
----
-
-
-![rdp local resources](assets/rdp-windows.png)
-
-Microsoft Remote Desktop Client on Windows
-
----
-![rdp with local folder](assets/rdp-with-local-folder.png)
-
-Local folder shared in RDP session
 
 ---
 
@@ -1667,30 +1489,6 @@ class: title
 
 ---
 
-## Use the VOLUME instruction
-
-- There is a `VOLUME` instruction in Dockerfiles.
-
-.exercise[
-
-- Add a `VOLUME` to make it more readable.
-  ```Dockerfile
-  # escape=`
-  FROM mcr.microsoft.com/windows/nanoserver:1809
-  VOLUME C:\data
-  CMD cmd /c dir c:\data\content.txt & echo hello >c:\data\content.txt
-  ```
-
-- Build and run the container. Run it again. Does it behave different?
-  ```powershell
-  docker build -t content .
-  docker run content
-  ```
-
-]
-
----
-
 ## Windows volumes in practice
 
 ## Empty directory
@@ -1701,37 +1499,152 @@ class: title
 
 ---
 
-## Third-party volume driver plugins
-
-- [HPE Nimble Storage Volume driver and plugin](https://www.hpe.com/de/de/storage/containers.html)
-
----
-
-class: title
-
-# Dockerizing a Windows application into containers
-
----
-
-## MusicStore example
-
-- https://github.com/docker/labs/tree/master/windows/modernize-traditional-apps/modernize-aspnet
-
-- https://github.com/aspnet/MusicStore
-
----
-
 ## Orchestrators?
 
 - Docker Swarm
 
 Work in progress:
 
-- Kubernetes
+- Kubernetes, currently in beta, planned for 1.13
 
 - OpenShift
 
 ...
+
+---
+
+class: title
+
+# Docker Swarm mode
+
+---
+
+## Docker Swarm
+
+- Use the current RDP session as manager node
+
+- Create a Docker Swarm cluster
+
+.exercise[
+
+- Lookup the IP address of the manager node
+  ```powershell
+  ipconfig | sls IPv4
+  ```
+
+- Initialize a Docker Swarm single node
+  ```powershell
+  docker swarm init --advertise-addr 10.0.xx.xx 
+  ```
+
+]
+
+---
+
+## Docker Swarm
+
+- Add your second machine as worker node
+
+.exercise[
+
+- Copy the docker swarm join command and paste it into second node
+  ```powershell
+  docker swarm join ...
+  ```
+
+]
+
+---
+
+## Docker Swarm
+
+- Go back to the manager node
+
+.exercise[
+
+- List your available nodes in the Docker Swarm cluster
+  ```powershell
+  docker node ls
+  ```
+
+]
+
+---
+
+## Appetizer app: The Stack file
+
+- Docker Stack uses a `docker-compose.yml` file to define multiple services
+
+- Define services in a Compose file
+  ```
+  version: "3.2"
+  services:
+
+    chocolate:
+      image: chocolateyfest/appetizer:1.0.0
+      ports:
+        - 8080:8080
+      deploy:
+        placement:
+          constraints:
+            - node.platform.os == windows
+  ```
+
+---
+
+## Deploy the stack
+
+- Go back to the manager node
+
+.exercise[
+
+- Now deploy the Stack to you Docker Swarm cluster
+  ```powershell
+  docker stack deploy -c docker-compose.yml appetizer
+  ```
+
+]
+
+---
+
+## Open the browser
+
+- Swarm services cannot be access by localhost.
+
+- Use the external name of the Docker Swarm node to access published ports
+
+.exercise[
+
+- Open a browser
+  ```powershell
+  start http://$($env:FQDN):8080
+  ```
+
+- Reload the page in the browser
+
+]
+
+---
+
+## Scale it up
+
+- Scale the service to have more than one replica
+
+.exercise[
+
+- List your deployed services in the Swarm cluster
+  ```powershell
+  docker service ls
+  ```
+
+- Scale the service up
+  ```powershell
+  docker service scale xxx_appetizer=8
+  ```
+
+- Reload the page in the browser
+
+]
 
 ---
 
@@ -1742,6 +1655,7 @@ Work in progress:
 
 - Azure
   - Windows Server 2016, 1709, 1803, **2019**
+  - Azure Pipeline
 
 - AppVeyor CI
   - [github.com/StefanScherer/dockerfiles-windows](https://github.com/StefanScherer/dockerfiles-windows/pull/344) - collection
