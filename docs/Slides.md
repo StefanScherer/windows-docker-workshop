@@ -80,9 +80,6 @@ background-image: url(assets/mvp_docker_captain.png)
 - [GitHub](https://github.com/join) account
   <br/>(if you want to fork the repo)
 
-- [Gitter](https://gitter.im/) account
-  <br/>(to join the conversation during the workshop)
-
 - [Docker Hub](https://hub.docker.com) account
   <br/>(it's one way to distribute images on your Docker host)
 
@@ -92,7 +89,7 @@ background-image: url(assets/mvp_docker_captain.png)
 
 - The whole workshop is hands-on
 
-- We will see Docker EE 18.03.1-ee-1 in action
+- We will see Docker EE 18.03.1-ee-3 in action
 
 - You are invited to reproduce all the demos
 
@@ -103,8 +100,7 @@ background-image: url(assets/mvp_docker_captain.png)
 - This is the stuff you're supposed to do!
 - Go to [stefanscherer.github.io/windows-docker-workshop](https://stefanscherer.github.io/windows-docker-workshop/) to view these slides
 
-- Join the chat room on
-  [gitter.im/windows-docker-workshop/Lobby](https://gitter.im/windows-docker-workshop/Lobby)
+- Join the Chocolatey Slack and use `#chocolatey-fest` channel to chat
 
 ]
 
@@ -137,8 +133,8 @@ You are welcome to use the method that you feel the most comfortable with.
 
 ## Brand new versions!
 
-- Docker Enterprise Edition 18.03.1-ee-1
-- Docker Compose 1.21.2
+- Docker Enterprise Edition 18.03.1-ee-3
+- Docker Compose 1.22.0
 
 .exercise[
 - Log into your Docker host through RDP (user and password is on your card)<br /><br />
@@ -301,7 +297,7 @@ class: title
 ---
 
 background-image: url(assets/base_images.png)
-# Windows base OS images
+# Windows Server 2016 base OS images
 
 ## FROM microsoft/windowsservercore
   * nearly full Win32 compatible
@@ -319,17 +315,17 @@ background-image: url(assets/base_images.png)
 ---
 
 background-image: url(assets/base_images.png)
-# Upcoming Windows 2019 base OS images
+# Windows Server 2019 base OS images
 
-## FROM mcr.microsoft.com/windows
+## FROM mcr.microsoft.com/windows ?
   * full Win32 compatible
   * 3,5 GByte
 
-## FROM mcr.microsoft.com/windowsservercore
+## FROM mcr.microsoft.com/windows/servercore
   * nearly full Win32 compatible
   * 1,5 GByte
 
-## FROM mcr.microsoft.com/nanoserver
+## FROM mcr.microsoft.com/windows/nanoserver
   * 94 MByte
   * No 32bit, no MSI, no PowerShell
 
@@ -345,8 +341,8 @@ background-image: url(assets/base_images.png)
 - Pull or update to latest Windows base OS images:
   ```powershell
   docker image ls
-  docker image pull microsoft/nanoserver
-  docker image pull microsoft/windowsservercore
+  docker image pull mcr.microsoft.com/windows/nanoserver:1809
+  docker image pull mcr.microsoft.com/windows/servercore:ltsc2019
   ```
 ]
 
@@ -357,13 +353,13 @@ background-image: url(assets/base_images.png)
 .exercise[
 - Inspect an image:
   ```powershell
-  docker image inspect microsoft/windowsservercore
+  docker image inspect mcr.microsoft.com/windows/servercore:ltsc2019
   ```
 
 - Tag an image:
   ```powershell
-  docker image tag microsoft/windowsservercore myimage
-  docker image tag microsoft/windowsservercore myimage:1.0
+  docker image tag mcr.microsoft.com/windows/servercore:ltsc2019 myimage
+  docker image tag mcr.microsoft.com/windows/servercore:ltsc2019 myimage:1.0
   docker image ls
   ```
 ]
@@ -406,10 +402,10 @@ class: title
 .exercise[
 
   ```powershell
-  docker container run microsoft/nanoserver hostname
-  docker container run microsoft/nanoserver ipconfig
-  docker container run microsoft/nanoserver cmd /c set
-  docker container run microsoft/nanoserver cmd /c cd
+  docker container run mcr.microsoft.com/windows/nanoserver:1809 hostname
+  docker container run mcr.microsoft.com/windows/nanoserver:1809 ipconfig
+  docker container run mcr.microsoft.com/windows/nanoserver:1809 cmd /c set
+  docker container run mcr.microsoft.com/windows/nanoserver:1809 cmd /c cd
   ```
 ]
 
@@ -477,7 +473,8 @@ class: title
 - Run a container that creates a file `test1.txt`
 
   ```powershell
-  docker container run microsoft/nanoserver powershell -command Out-File test1.txt
+  docker container run mcr.microsoft.com/windows/nanoserver:1809 powershell `
+    -command Out-File test1.txt
   ```
 
 - Show the differences between the container and the image
@@ -523,7 +520,7 @@ class: title
 - Run a container with a longer running process
 
   ```powershell
-  docker container run microsoft/nanoserver ping -n 30 google.de
+  docker container run mcr.microsoft.com/windows/nanoserver:1809 ping -n 30 google.de
   ```
 
 - Try to abort the container with `[CTRL] + C` and list containers
@@ -547,7 +544,7 @@ class: title
 - Run a container with a longer running process
 
   ```powershell
-  docker container run -it microsoft/nanoserver ping -n 30 google.de
+  docker container run -it mcr.microsoft.com/windows/nanoserver:1809 ping -n 30 google.de
   ```
 
 - Try to abort the container with `[CTRL] + C` and list containers
@@ -569,7 +566,7 @@ class: title
 - Run a shell inside a container
 
   ```powershell
-  docker container run -it microsoft/nanoserver powershell
+  docker container run -it mcr.microsoft.com/windows/nanoserver:1809 powershell
   ls
   cd Users
   exit
@@ -588,7 +585,7 @@ class: title
 - Run a detached "ping service" container
 
   ```powershell
-  docker container run -d microsoft/nanoserver powershell ping -n 300 google.de
+  docker container run -d mcr.microsoft.com/windows/nanoserver:1809 powershell ping -n 300 google.de
   ```
 
 - Now list, log or kill the container
@@ -611,7 +608,7 @@ class: title
 - You can automatically remove containers after exit
 
   ```powershell
-  docker container run --rm microsoft/nanoserver ping google.de
+  docker container run --rm mcr.microsoft.com/windows/nanoserver:1809 ping google.de
   ```
 
 - You can remove containers manually by their names or IDs
@@ -686,7 +683,7 @@ class: title
 - Try to run this PowerShell
 
   ```powershell
-  docker container run -d --name iis -p 80:80 microsoft/iis:nanoserver
+  docker container run -d --name iis -p 80:80 chocolateyfest/iis
   ```
 
 - Now **on your local computer**, open a browser
@@ -697,7 +694,7 @@ class: title
 
 ---
 
-## Windows Containers don't do loopback
+## Windows Containers now does loopback
 
 - At the moment you can't reach the published port 80 from the Docker Host
 
@@ -717,13 +714,6 @@ start http://$(docker inspect -f '{{.NetworkSettings.Networks.nat.IPAddress}}' i
   ```
 
  ]
-
----
-
-## Windows Containers don't do loopback
-
-- https://blog.sixeyed.com/published-ports-on-windows-containers-dont-do-loopback/
-![Right-aligned image](https://blog.sixeyed.com/content/images/2016/10/win-nat-1.png)
 
 ---
 
@@ -868,7 +858,7 @@ class: title
 - Open an editor and create a `Dockerfile`
 
   ```Dockerfile
-  FROM microsoft/iis:nanoserver
+  FROM chocolateyfest/iis
   COPY iisstart.htm C:\inetpub\wwwroot
   ```
 
@@ -1071,7 +1061,7 @@ https://stefanscherer.github.io/protecting-a-windows-2016-docker-engine-with-tls
     -e IP_ADDRESSES=$ips,$env:PUBIP `
     -v "C:\ProgramData\docker:C:\ProgramData\docker" `
     -v "$env:USERPROFILE\.docker:C:\Users\ContainerAdministrator\.docker" `
-    stefanscherer/dockertls-windows
+    chocolateyfest/dockertls
   ```
 
 ]
@@ -1126,18 +1116,14 @@ https://stefanscherer.github.io/protecting-a-windows-2016-docker-engine-with-tls
 
 .exercise[
 
-- Get IP address of Ethernet adapter vEthernet (HNS Internal NIC)
-
-  ```powershell
-  ipconfig
-  ```
+- Windows Server 2019 can bind mount named pipes
 
 - Run Portainer as Windows container
 
   ```powershell
   docker run -d -p 9000:9000 --name portainer --restart always `
-    -v $env:USERPROFILE\.docker:C:\certs portainer/portainer `
-    -H tcp://172.x.x.x:2376 --tlsverify
+    -v //./pipe/docker_engine://./pipe/docker_engine `
+    chocolateyfest/portainer
   ```
 ]
 
@@ -1219,13 +1205,13 @@ class: title
 - Run a container with network
 
   ```powershell
-  docker container run microsoft/nanoserver ipconfig
+  docker container run mcr.microsoft.com/windows/nanoserver:1809 ipconfig
   ```
 
 - Run a container without a network
 
   ```powershell
-  docker container run --network none microsoft/nanoserver ipconfig
+  docker container run --network none mcr.microsoft.com/windows/nanoserver:1809 ipconfig
   ```
 
 ]
@@ -1241,8 +1227,8 @@ class: title
 - Run IIS again, as well as an interactive container
 
   ```powershell
-  docker container run --name iis -p 80:80 -d microsoft/iis:nanoserver
-  docker container run -it microsoft/nanoserver powershell
+  docker container run --name iis -p 80:80 -d chocolateyfest/iis
+  docker container run -it mcr.microsoft.com/windows/nanoserver:1809 powershell
   ```
 
 - Now inside the container, try to access the IIS web server by its DNS name
@@ -1294,7 +1280,7 @@ background-image: url(assets/compose.png)
   version: '2.1'
   services:
       web:
-        image: microsoft/iis:nanoserver
+        image: chocolateyfest/iis
         ports:
           - 80:80
   ```
@@ -1331,12 +1317,12 @@ background-image: url(assets/compose.png)
   ```
   services:
       web:
-        image: microsoft/iis:nanoserver
+        image: chocolateyfest/iis
         ports:
           - 80:80
 
       client:
-        image: microsoft/nanoserver
+        image: mcr.microsoft.com/windows/nanoserver:1809
         command: powershell -Command Invoke-WebRequest http://web
   ```
 
@@ -1372,12 +1358,12 @@ background-image: url(assets/compose.png)
   version: '2.1'
   services:
       web:
-        image: microsoft/iis:nanoserver
+        image: chocolateyfest/iis
         ports:
           - 80:80
 
       client:
-        image: microsoft/nanoserver
+        image: mcr.microsoft.com/windows/nanoserver:1809
         command: powershell -Command Sleep 2 ; Invoke-WebRequest http://web
         depends_on:
           - web
@@ -1460,7 +1446,7 @@ class: title
 
   ```Dockerfile
   # escape=`
-  FROM microsoft/iis:nanoserver
+  FROM chocolateyfest/iis
   COPY iisstart.htm C:\inetpub\wwwroot
   ```
 
@@ -1483,7 +1469,7 @@ class: title
 - Example
   ```Dockerfile
   # escape=`
-  FROM microsoft/windowsservercore
+  FROM mcr.microsoft.com/windows/servercore:ltsc2019
   RUN powershell -Command Invoke-WebRequest 'http://foo.com/bar.zip' `
                               -OutFile 'bar.zip' -UseBasicParsing
   RUN powershell -Command Expand-Archive bar.zip -DestinationPath C:\
@@ -1501,7 +1487,7 @@ class: title
 - Use `$ProgressPreference = 'SilentlyContinue'` to improve download speed.
 
   ```Dockerfile
-  FROM microsoft/nanoserver
+  FROM mcr.microsoft.com/windows/servercore:ltsc2019
 
   SHELL ["powershell", "-Command", `
       "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
@@ -1515,7 +1501,7 @@ class: title
 
   ```Dockerfile
   # escape=`
-  FROM microsoft/windowsservercore
+  FROM mcr.microsoft.com/windows/servercore:ltsc2019
 
   SHELL ["powershell", "-Command", `
       "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
@@ -1545,7 +1531,7 @@ class: title
 
   ```Dockerfile
   # escape=`
-  FROM microsoft/windowsservercore
+  FROM mcr.microsoft.com/windows/servercore:ltsc2019
 
   SHELL ["powershell", "-Command", `
       "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
@@ -1621,7 +1607,7 @@ class: title
 
 - Write a small Dockerfile that reads and writes a file at runtime.
   ```Dockerfile
-  FROM microsoft/nanoserver
+  FROM mcr.microsoft.com/windows/nanoserver:1809
   CMD cmd /c dir content.txt & echo hello >content.txt
   ```
 
@@ -1643,7 +1629,7 @@ class: title
 
 - Add a `WORKDIR` to have an empty folder inside the container.
   ```Dockerfile
-  FROM microsoft/nanoserver
+  FROM mcr.microsoft.com/windows/nanoserver:1809
   WORKDIR /data
   CMD cmd /c dir content.txt & echo hello >content.txt
   ```
@@ -1690,7 +1676,7 @@ class: title
 - Add a `VOLUME` to make it more readable.
   ```Dockerfile
   # escape=`
-  FROM microsoft/nanoserver
+  FROM mcr.microsoft.com/windows/nanoserver:1809
   VOLUME C:\data
   CMD cmd /c dir c:\data\content.txt & echo hello >c:\data\content.txt
   ```
@@ -1711,37 +1697,7 @@ class: title
 
 - You can mount a volume only into an empty directory.
 
-- The `microsoft/iis` default folder `C:\inetpub\wwwroot` is not empty.
-
-## Real path problem
-
-- Some applications try to get the **real path** of a file.
-- They often fail at the reparse point.
-
-- Use a mapped drive as a workaround.
-
----
-
-## Use a mapped drive
-
-- This is a workaround to run Node.js sources mounted from the host
-
-```Dockerfile
-# escape=`
-FROM stefanscherer/node-windows:10
-
-RUN npm install -g nodemon
-
-VOLUME C:\code
-RUN set-itemproperty -path `
-    'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\DOS Devices' `
-    -Name 'G:' -Value '\??\C:\code' -Type String
-WORKDIR G:\
-
-CMD ["nodemon.cmd", "--debug=5858", "app.js"]
-```
-
-- The Node.js app is running in `G:\`, you still use `C:\code` for your volume.
+- The `chocolatey/iis` default folder `C:\inetpub\wwwroot` is not empty.
 
 ---
 
