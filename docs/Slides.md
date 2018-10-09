@@ -469,7 +469,7 @@ class: title
 - Run a container that creates a file `test1.txt`
 
   ```powershell
-  docker container run mcr.microsoft.com/windows/nanoserver:1809 powershell `
+  docker container run mcr.microsoft.com/windows/servercore:ltsc2019 powershell `
     -command Out-File test1.txt
   ```
 
@@ -562,7 +562,7 @@ class: title
 - Run a shell inside a container
 
   ```powershell
-  docker container run -it mcr.microsoft.com/windows/nanoserver:1809 powershell
+  docker container run -it mcr.microsoft.com/windows/servercore:ltsc2019 powershell
   ls
   cd Users
   exit
@@ -581,7 +581,7 @@ class: title
 - Run a detached "ping service" container
 
   ```powershell
-  docker container run -d mcr.microsoft.com/windows/nanoserver:1809 powershell ping -n 300 google.de
+  docker container run -d mcr.microsoft.com/windows/servercore:ltsc2019 powershell ping -n 300 google.de
   ```
 
 - Now list, log or kill the container
@@ -1050,7 +1050,7 @@ class: title
 
   ```powershell
   docker container run --name iis -p 80:80 -d chocolateyfest/iis
-  docker container run -it mcr.microsoft.com/windows/nanoserver:1809 powershell
+  docker container run -it mcr.microsoft.com/windows/servercore:ltsc2019 powershell
   ```
 
 - Now inside the container, try to access the IIS web server by its DNS name
