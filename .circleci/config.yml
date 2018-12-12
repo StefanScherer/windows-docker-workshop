@@ -129,7 +129,7 @@ workflows:
       - psscriptanalyzer
       - packer-validate
       - terraform-validate
-      - build-windows-2016:
+      - build-windows-2019:
           requires:
             - shellcheck
             - psscriptanalyzer
