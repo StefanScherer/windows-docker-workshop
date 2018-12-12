@@ -134,7 +134,7 @@ You are welcome to use the method that you feel the most comfortable with.
 
 .exercise[
 - Log into your Docker host through RDP (user and password is on your card)<br /><br />
-  **`dowcf-XX.westus2.cloudapp.azure.com`**
+  **`dowcf-XX.westeurope.cloudapp.azure.com`**
 
 - Open a terminal
 
@@ -684,7 +684,7 @@ class: title
 
 - Now **on your local computer**, open a browser
 
-  - http://dowcf-XX.westus2.cloudapp.azure.com
+  - http://dowcf-XX.westeurope.cloudapp.azure.com
 
  ]
 
@@ -798,7 +798,7 @@ class: title
 
 - Now **on your local computer**, open a browser
 
-  - http://dowcf-XX.westus2.cloudapp.azure.com
+  - http://dowcf-XX.westeurope.cloudapp.azure.com
 
 ]
 

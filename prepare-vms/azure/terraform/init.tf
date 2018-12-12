@@ -18,5 +18,5 @@ resource "azurerm_storage_account" "global" {
 
 data "azurerm_image" "workshop_image" {
   name                = "${var.workshop_image}"
-  resource_group_name = "chocolateyfest-docker-workshop-images"
+  resource_group_name = "windows-docker-workshop-images"
 }

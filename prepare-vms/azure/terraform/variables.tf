@@ -17,7 +17,7 @@ variable "account" {
 }
 
 variable "location" {
-  default = "westus2"
+  default = "westeurope"
 }
 
 variable "azure_dns_suffix" {

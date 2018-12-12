@@ -12,7 +12,7 @@
       "image_sku": "2016-Datacenter-with-Containers",
       "location": "{{user `location`}}",
       "managed_image_name": "{{user `image_name`}}",
-      "managed_image_resource_group_name": "chocolateyfest-docker-workshop-images",
+      "managed_image_resource_group_name": "windows-docker-workshop-images",
       "os_type": "Windows",
       "subscription_id": "{{user `subscription_id`}}",
       "tenant_id": "{{user `tenant_id`}}",
@@ -46,7 +46,7 @@
     "client_id": "{{env `ARM_CLIENT_ID`}}",
     "client_secret": "{{env `ARM_CLIENT_SECRET`}}",
     "image_name": "win2016",
-    "location": "West US 2",
+    "location": "West Europe",
     "subscription_id": "{{env `ARM_SUBSCRIPTION_ID`}}",
     "tenant_id": "{{env `ARM_TENANT_ID`}}",
     "vm_size": "Standard_D2_v3"
