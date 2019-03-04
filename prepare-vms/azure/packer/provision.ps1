@@ -26,8 +26,8 @@ if (!(Test-Path 'c:\Program Files\sysinternals\bginfo.exe')) {
 if (!(Test-Path 'c:\Program Files\sysinternals\bginfo.bgi')) {
   (New-Object Net.WebClient).DownloadFile('https://github.com/StefanScherer/windows-docker-workshop/raw/master/prepare-vms/azure/packer/bginfo.bgi', 'c:\Program Files\sysinternals\bginfo.bgi')
 }
-if (!(Test-Path 'c:\Program Files\sysinternals\background.png')) {
-  (New-Object Net.WebClient).DownloadFile('https://github.com/StefanScherer/windows-docker-workshop/raw/master/prepare-vms/azure/packer/background.png', 'c:\Program Files\sysinternals\background.png')
+if (!(Test-Path 'c:\Program Files\sysinternals\background.jpg')) {
+  (New-Object Net.WebClient).DownloadFile('https://github.com/StefanScherer/windows-docker-workshop/raw/master/prepare-vms/azure/packer/background.jpg', 'c:\Program Files\sysinternals\background.jpg')
 }
 $vbsScript = @'
 WScript.Sleep 2000
