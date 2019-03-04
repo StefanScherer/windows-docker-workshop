@@ -1,7 +1,7 @@
 # Settings
 
 variable "dns_prefix" {
-  default = "wdw"
+  default = "dog"
 }
 
 variable "count" {
@@ -9,11 +9,11 @@ variable "count" {
 }
 
 variable "group_name" {
-  default = "chocolateyfest-docker-workshop"
+  default = "windows-docker-workshop"
 }
 
 variable "account" {
-  default = "chocotraining"
+  default = "dogtraining"
 }
 
 variable "location" {
@@ -30,7 +30,7 @@ variable "admin_username" {
 }
 
 variable "workshop_image" {
-  default = "windows_2019_docker_azure_342"
+  default = "windows_2019_604"
 }
 
 variable "vm_size" {
