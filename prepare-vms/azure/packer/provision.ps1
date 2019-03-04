@@ -1,7 +1,7 @@
 $ErrorActionPreference = 'Stop'
 
 $docker_provider = "DockerMsftProvider"
-$docker_version = "18.03.1-ee-3"
+$docker_version = "18.09.3"
 
 Write-Output 'Set Windows Updates to manual'
 Cscript $env:WinDir\System32\SCregEdit.wsf /AU 1
@@ -26,8 +26,8 @@ if (!(Test-Path 'c:\Program Files\sysinternals\bginfo.exe')) {
 if (!(Test-Path 'c:\Program Files\sysinternals\bginfo.bgi')) {
   (New-Object Net.WebClient).DownloadFile('https://github.com/StefanScherer/windows-docker-workshop/raw/master/prepare-vms/azure/packer/bginfo.bgi', 'c:\Program Files\sysinternals\bginfo.bgi')
 }
-if (!(Test-Path 'c:\Program Files\sysinternals\background.jpg')) {
-  (New-Object Net.WebClient).DownloadFile('https://github.com/StefanScherer/windows-docker-workshop/raw/master/prepare-vms/azure/packer/background.jpg', 'c:\Program Files\sysinternals\background.jpg')
+if (!(Test-Path 'c:\Program Files\sysinternals\background.png')) {
+  (New-Object Net.WebClient).DownloadFile('https://github.com/StefanScherer/windows-docker-workshop/raw/master/prepare-vms/azure/packer/background.png', 'c:\Program Files\sysinternals\background.png')
 }
 $vbsScript = @'
 WScript.Sleep 2000
@@ -78,22 +78,11 @@ Write-Output 'Docker version'
 docker version
 
 $images =
-'microsoft/windowsservercore:ltsc2016',
-'microsoft/nanoserver:sac2016',
-'microsoft/windowsservercore',
-'microsoft/nanoserver',
-'microsoft/iis',
+'mcr.microsoft.com/windows/servercore:ltsc2019',
+'mcr.microsoft.com/windows/nanoserver:1809',
+'mcr.microsoft.com/windows/servercore/iis:windowsservercore-ltsc2019',
 'golang',
-'golang:nanoserver',
-'microsoft/dotnet-framework:4.7.2-sdk',
-'microsoft/dotnet-framework:4.7.2-runtime',
-'microsoft/dotnet:2.0-sdk-nanoserver-sac2016',
-'microsoft/dotnet:2.0-runtime-nanoserver-sac2016',
-'microsoft/aspnetcore:2.0-nanoserver-sac2016',
-'microsoft/iis:nanoserver-sac2016',
-'microsoft/aspnet:4.7.2-windowsservercore-ltsc2016',
-'microsoft/mssql-server-windows-express:2016-sp1',
-'nats:1.1.0-nanoserver'
+'golang:nanoserver'
 
 Write-Output 'Pulling images'
 foreach ($tag in $images) {

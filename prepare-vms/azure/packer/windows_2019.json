@@ -4,17 +4,12 @@
       "azure_tags": {
         "circle_build_num": "{{user `circle_build_num`}}"
       },
-      "plan_info": {
-        "plan_name": "2019-Datacenter",
-        "plan_product": "WindowsServer",
-        "plan_publisher": "MicrosoftWindowsServer"
-      },
       "client_id": "{{user `client_id`}}",
       "client_secret": "{{user `client_secret`}}",
       "communicator": "winrm",
       "image_offer": "WindowsServer",
       "image_publisher": "MicrosoftWindowsServer",
-      "image_sku": "2019-Datacenter",
+      "image_sku": "2019-Datacenter-with-Containers",
       "location": "{{user `location`}}",
       "managed_image_name": "{{user `image_name`}}",
       "managed_image_resource_group_name": "windows-docker-workshop-images",
