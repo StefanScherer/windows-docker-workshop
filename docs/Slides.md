@@ -87,7 +87,7 @@ background-image: url(assets/mvp_docker_captain.png)
 
 - The whole workshop is hands-on
 
-- We will see Docker EE 18.03.1-ee-3 in action
+- We will see Docker EE 18.09.3 in action
 
 - You are invited to reproduce all the demos
 
@@ -129,8 +129,8 @@ You are welcome to use the method that you feel the most comfortable with.
 
 ## Brand new versions!
 
-- Docker Enterprise Edition 18.03.1-ee-3
-- Docker Compose 1.22.0
+- Docker Enterprise Edition 18.09.3
+- Docker Compose 1.23.1
 
 .exercise[
 - Log into your Docker host through RDP (user and password is on your card)<br /><br />
@@ -200,7 +200,7 @@ class: title
   ```powershell
   Install-Module -Name DockerMsftProvider -Repository PSGallery -Force
   Find-Package -ProviderName DockerMsftProvider -AllVersions
-  Install-Package -Name docker -ProviderName DockerMsftProvider -Min 18.03.1-ee-3
+  Install-Package -Name docker -ProviderName DockerMsftProvider
   Restart-Computer -Force
   ```
 
