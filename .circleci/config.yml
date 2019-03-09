@@ -59,7 +59,7 @@ jobs:
 
   terraform-validate:
     docker:
-      - image: hashicorp/terraform:0.11.11
+      - image: hashicorp/terraform:0.11.12
 
     steps:
       - checkout
@@ -75,7 +75,7 @@ jobs:
 
   terraform: &terraform
     docker:
-      - image: hashicorp/terraform:0.11.11
+      - image: hashicorp/terraform:0.11.12
 
     steps:
       - checkout
