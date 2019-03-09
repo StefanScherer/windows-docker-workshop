@@ -32,7 +32,7 @@ jobs:
 
   packer-validate:
     docker:
-      - image: hashicorp/packer:1.2.4
+      - image: hashicorp/packer:1.3.5
 
     steps:
       - checkout
@@ -47,7 +47,7 @@ jobs:
 
   packer: &packer
     docker:
-      - image: hashicorp/packer:1.2.4
+      - image: hashicorp/packer:1.3.5
 
     steps:
       - checkout
@@ -59,7 +59,7 @@ jobs:
 
   terraform-validate:
     docker:
-      - image: hashicorp/terraform:0.11.7
+      - image: hashicorp/terraform:0.11.11
 
     steps:
       - checkout
@@ -75,7 +75,7 @@ jobs:
 
   terraform: &terraform
     docker:
-      - image: hashicorp/terraform:0.11.7
+      - image: hashicorp/terraform:0.11.11
 
     steps:
       - checkout
