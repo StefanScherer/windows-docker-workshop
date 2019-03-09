@@ -29,6 +29,7 @@
     {
       "scripts": [
         "./install-containers-feature.ps1"
+        "./updates.ps1"
       ],
       "type": "powershell"
     },
