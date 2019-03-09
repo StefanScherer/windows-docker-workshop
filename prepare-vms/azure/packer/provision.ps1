@@ -92,9 +92,3 @@ foreach ($tag in $images) {
 
 Write-Output 'Disable autologon'
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name AutoAdminLogon -PropertyType DWORD -Value "0" -Force
-
-Write-Output 'Install all Windows Updates'
-Get-Content C:\windows\system32\en-us\WUA_SearchDownloadInstall.vbs | ForEach-Object {
-  $_ -replace 'confirm = msgbox.*$', 'confirm = vbNo'
-} | Out-File $env:TEMP\WUA_SearchDownloadInstall.vbs
-"a`na`na`na" | cscript $env:TEMP\WUA_SearchDownloadInstall.vbs

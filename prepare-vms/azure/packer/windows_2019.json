@@ -40,6 +40,16 @@
     {
       "scripts": [
         "./openssh.ps1",
+        "./updates.ps1"
+      ],
+      "type": "powershell"
+    },
+    {
+      "restart_timeout": "{{user `restart_timeout`}}",
+      "type": "windows-restart"
+    },
+    {
+      "scripts": [
         "./provision.ps1"
       ],
       "type": "powershell"
