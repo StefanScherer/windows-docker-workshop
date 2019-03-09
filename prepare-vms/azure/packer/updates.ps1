@@ -4,5 +4,5 @@ Write-Output Listing Windows Updates
 $ProgressPreference = 'SilentlyContinue'
 Get-WUInstall -MicrosoftUpdate -AcceptAll
 Write-Output Installing Windows Updates
-Get-WUInstall -Install -AcceptAll -IgnoreReboot
+Get-WUInstall -Install -MicrosoftUpdate -AcceptAll -IgnoreReboot
 Write-Output Done.
