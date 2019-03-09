@@ -28,8 +28,8 @@
   "provisioners": [
     {
       "scripts": [
-        "./install-containers-feature.ps1",
-        "./updates.ps1"
+        "./updates.ps1",
+        "./install-containers-feature.ps1"
       ],
       "type": "powershell"
     },
