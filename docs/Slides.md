@@ -10,7 +10,7 @@ background-image: url(assets/mvp_docker_captain.png)
 
 - Hello! I am
   Stefan ([@stefscherer](https://twitter.com/stefscherer))
-- I work at [sealsystems.de](https://sealsystems.de)
+- I work for [Docker](https://docker.com)
 - I do open source at [github.com/StefanScherer](https://github.com/StefanScherer)
 - I blog [stefanscherer.github.io](http://stefanscherer.github.io/)
 
@@ -23,7 +23,7 @@ background-image: url(assets/mvp_docker_captain.png)
 -->
 
 .small[
-- 6:30pm - 9:30pm hands-on workshop
+- 9:00 - 12:30 hands-on workshop
 ]
 
 <!--
@@ -73,7 +73,7 @@ background-image: url(assets/mvp_docker_captain.png)
 ## Nice-to-haves
 
 - [Docker Client](https://docker.com/) if you want to remote control your Docker engine
-  <br/>(available with Docker 4 Windows/Mac)
+  <br/>(available with Docker Desktop for Windows and Mac)
 
 - [GitHub](https://github.com/join) account
   <br/>(if you want to fork the repo)
@@ -134,7 +134,7 @@ You are welcome to use the method that you feel the most comfortable with.
 
 .exercise[
 - Log into your Docker host through RDP (user and password is on your card)<br /><br />
-  **`dowcf-XX.westeurope.cloudapp.azure.com`**
+  **`dog19-XX.westeurope.cloudapp.azure.com`**
 
 - Open a terminal
 
@@ -292,36 +292,18 @@ class: title
 
 ---
 
-background-image: url(assets/base_images.png)
-# Windows Server 2016 base OS images
-
-## FROM microsoft/windowsservercore
-  * nearly full Win32 compatible
-  * 5 GByte
-  * Download once, Base layer shared with all Windows images
-
-## FROM microsoft/nanoserver
-  * fast to boot
-  * 418 MByte
-  * software may need porting
-  * No 32bit, no MSI
-
-## ~~FROM scratch~~
-
----
-
-background-image: url(assets/base_images.png)
+background-image: url(assets/base_images_2019.png)
 # Windows Server 2019 base OS images
 
-## FROM mcr.microsoft.com/windows ?
+## FROM mcr.microsoft.com/windows:1809
   * full Win32 compatible
   * 3,5 GByte
 
-## FROM mcr.microsoft.com/windows/servercore
+## FROM mcr.microsoft.com/windows/servercore:ltsc2019
   * nearly full Win32 compatible
   * 1,5 GByte
 
-## FROM mcr.microsoft.com/windows/nanoserver
+## FROM mcr.microsoft.com/windows/nanoserver:1809
   * 94 MByte
   * No 32bit, no MSI, no PowerShell
 
@@ -635,14 +617,13 @@ class: title
 
 .exercise[
 
-- Search of images with the Docker client
+- Pull the IIS image from the MCR - Microsoft Container Registry
 
   ```powershell
-  docker search microsoft
-  docker image pull microsoft/iis:nanoserver
+  docker image pull mcr.microsoft.com/windows/servercore/iis:windowsservercore-ltsc2019
   ```
 
-- Go to https://hub.docker.com and search for images
+- Go to https://hub.docker.com and search for images, look for microsoft/iis
 
 ]
 
@@ -679,13 +660,17 @@ class: title
 - Try to run this PowerShell
 
   ```powershell
-  docker container run -d --name iis -p 80:80 chocolateyfest/iis
+  docker container run -d --name iis -p 80:80 `
+  mcr.microsoft.com/windows/servercore/iis:windowsservercore-ltsc2019
   ```
 
-- Now **on your local computer**, open a browser
+- Now **on your local computer**, open a browser, IIS is reachable from the internet
 
-  - http://dowcf-XX.westeurope.cloudapp.azure.com
+  - http://dog19-XX.westeurope.cloudapp.azure.com
 
+  ```powershell
+  start http://$env:FQDN
+  ```
  ]
 
 ---
@@ -704,103 +689,7 @@ class: title
 
  ]
 
----
-
-## A closer look into IIS container
-
-- The IIS is serving a standard welcome page.
-- Let's enter the container and look behind the scenes.
-
-.exercise[
-
-- Execute an interactive shell inside the still running IIS container
-
-  ```powershell
-  docker container exec -it iis powershell
-  ```
-
-- Go to the default folder with the web content of IIS
-
-  ```powershell
-  cd C:\inetpub\wwwroot
-  dir
-  ```
-
-- Modify the `index.html` file, but there is no editor :-( So `exit` the terminal again.
-
- ]
-
----
-
-## Serving own content with IIS
-
-- The welcome page is nice, but we want to serve own content with IIS.
-
-.exercise[
-
-- Open an editor on your Docker Host and create a local file `iisstart.htm`
-
-  ```html
-  <html><body>Hello from Windows container</body></html>
-  ```
-
-- Copy that file `iisstart.htm` into the running container
-
-  ```powershell
-  docker container cp iisstart.htm iis:C:\inetpub\wwwroot
-  ```
-
-- Reload your browser
-
-]
-
----
-
-## Create a first own Docker image
-
-- We have changed a container. Can we build a static image out of it?
-
-
-.exercise[
-
-- Commit the changes of the container into a new image
-
-  ```powershell
-  docker container commit iis mywebsite
-  ```
-
-- Stop the running IIS container as we cannot commit while running
-
-  ```powershell
-  docker container stop iis
-  docker container commit iis mywebsite
-  ```
-
-- List the Docker images
-
-]
-
----
-
-## Run your first own container
-
-- You have created your first image `mywebsite`.
-- Now run a new container with it.
-
-.exercise[
-
-- Run your own website in a container
-
-  ```powershell
-  docker container run -d -p 80:80 --name web mywebsite
-  docker container ls
-  ```
-
-- Now **on your local computer**, open a browser
-
-  - http://dowcf-XX.westeurope.cloudapp.azure.com
-
-]
+Feature parity with Linux. The previous Windows Server 2016 couldn't do that.
 
 ---
 
@@ -832,83 +721,54 @@ class: title
 
 - Put into source code version control.
 
-- Make the result repeatable by others.
+- Make the result repeatable by others or your CI pipeline.
 
-- Or could you describe how to modify the IIS start page?
+---
+
+## The first own static website
+
+Let's create a own static website and serve it with IIS.
+
+.exercise[
+
+- Create a folder `website` on the Desktop.
+
+- Open an editor create a file `iisstart.htm` in that folder.
+
+  ```
+  <html><body>Hello from Windows container</body></html>
+  ```
+  
+]
 
 ---
 
 ## Build your first Dockerfile
 
-- Now put the pieces together and write a `Dockerfile` for the `mywebsite` image
+- Now write a `Dockerfile` for the our website image
 
 .exercise[
 
 - Open an editor and create a `Dockerfile`
 
   ```Dockerfile
-  FROM chocolateyfest/iis
+  FROM mcr.microsoft.com/windows/servercore/iis:windowsservercore-ltsc2019
   COPY iisstart.htm C:\inetpub\wwwroot
   ```
 
 - Now build a new Docker image
 
   ```powershell
-  docker image build -t bettersite .
+  docker image build -t mywebsite .
   ```
 
-- List Docker images and check image sizes
+- Oops, something went wrong...
 
 ]
 
 ---
 
-## Check what you have built
-
-- Run a new container with the new image
-
-.exercise[
-
-- Run your better website
-
-  ```powershell
-  docker container run -d -p 80:80 --name web bettersite
-  ```
-
-- Check the web site in your browser.
-
-]
-
----
-
-## What went wrong?
-
-- The IIS still publishes the standard welcome page. But why?
-- Let's inspect the image to understand what happened
-
-
-.exercise[
-
-- Inspect the `bettersite` image
-
-  ```powershell
-  docker image inspect bettersite
-  ```
-
-- You may find a line with
-
-  ```
-  "#(nop) COPY file:6ef0...1d5c in C:inetpubwwwroot "
-  ```
-
-- Seems that we have problems with Windows paths.
-]
-
-https://blog.sixeyed.com/windows-dockerfiles-and-the-backtick-backslash-backlash/
-
----
-
-## Escape the problem
+## Escape the backslash problem
 
 - In a `Dockerfile` you can use a `\` backslash for line continuation.
 - To produce a real backslash we have to use two `\\` backslashes.
@@ -921,71 +781,78 @@ https://blog.sixeyed.com/windows-dockerfiles-and-the-backtick-backslash-backlash
 
   ```Dockerfile
   # escape=`
-  FROM microsoft/iis:nanoserver
+  FROM mcr.microsoft.com/windows/servercore/iis:windowsservercore-ltsc2019
   COPY iisstart.htm C:\inetpub\wwwroot
   ```
 
 ]
 
-https://docs.docker.com/engine/reference/builder/#/escape
+https://docs.docker.com/engine/reference/builder/#escape
 
 ---
 
-## Rebuild your Docker image
+## Check what you have built
 
-- Rebuild and run
+- Run a new IIS container with the new image
 
 .exercise[
 
-- Kill the old web container, then rebuild and run a new container
+- Run your better website
 
   ```powershell
-  docker container kill web
-  docker container rm web
-  docker image build -t bettersite .
-  docker container run -d -p 80:80 --name web bettersite
+  docker container run -d -p 80:80 --name web mywebsite
   ```
 
-- Check the web site in your browser.
+- Check the web site in your browser http://localhost
 
 ]
 
 ---
 
-## Other useful commands
+class: title
 
-- Show disk usage
-- Clean up old images and containers
-
-.exercise[
-
-- Cleanup your host system and check sizes before and afterwards
-
-  ```powershell
-  docker system df
-  docker system prune
-  docker system df
-  ```
-
-]
+# Add a management UI
 
 ---
 
-# Run Portainer
+# Portainer
+
+- Portainer is an open source Docker management UI - https://portainer.io
+
+- It uses the Docker API to visualize and manage containers and lot more.
+
+- In Linux the Docker API is reachable with a unix socket `/var/run/docker.sock`
+
+## Named Pipes
+
+- In Windows the Docker API is reachable with a named pipe `//./pipe/docker_engine`
+
+- Windows Server 2019 can bind mount named pipes into Windows containers.
+
+- Feature parity with Linux. In Windows Server 2016 this wasn't possible.
+
+---
+
+## Run Portainer
 
 .exercise[
 
-- Windows Server 2019 can bind mount named pipes
 
-- Run Portainer as Windows container
+- Run Portainer in a Windows container
+
+- Map host port 9000 to the container port 9000
+
+- Map the named pipe into the container
 
   ```powershell
   docker run -d -p 9000:9000 --name portainer --restart always `
     -v //./pipe/docker_engine://./pipe/docker_engine `
-    chocolateyfest/portainer
+    portainer/portainer:1.20.1
   ```
   
 - Open the browser at http://localhost:9000
+
+- Create a password, and connect to the local endpoint.
 ]
 
 ---
@@ -1008,7 +875,7 @@ class: title
   ipconfig
   ```
 
-- The `vEthernet (HNS Internal NIC)` ethernet adapter is used by Docker containers
+- The `vEthernet (nat)` ethernet adapter is used by Docker containers
 
 - List all container networks
 
@@ -1049,7 +916,7 @@ class: title
 - Run IIS again, as well as an interactive container
 
   ```powershell
-  docker container run --name iis -p 80:80 -d chocolateyfest/iis
+  docker container run -d --name web -p 80:80 -d mywebsite
   docker container run -it mcr.microsoft.com/windows/servercore:ltsc2019 powershell
   ```
 
@@ -1057,12 +924,12 @@ class: title
 
 
   ```powershell
-  Invoke-WebRequest http://iis
+  Invoke-WebRequest http://web -UseBasicParsing
   ```
 
 ]
 
-- Don't forget to kill and remove the IIS container again.
+- Don't forget to kill and remove the website container again.
 
 ---
 background-image: url(assets/compose.png)
@@ -1076,7 +943,7 @@ background-image: url(assets/compose.png)
 
 ## Installing Docker Compose
 
-- Docker for Mac/Docker for Windows already has Docker Compose installed
+- Docker Desktop for Mac and Windows already have Docker Compose installed
 - Installation on Windows Server 2019
 
 .exercise[
@@ -1102,7 +969,7 @@ background-image: url(assets/compose.png)
   version: '2.1'
   services:
       web:
-        image: chocolateyfest/iis
+        image: mywebsite
         ports:
           - 80:80
   ```
@@ -1139,13 +1006,13 @@ background-image: url(assets/compose.png)
   ```
   services:
       web:
-        image: chocolateyfest/iis
+        image: mywebsite
         ports:
           - 80:80
 
       client:
         image: mcr.microsoft.com/windows/nanoserver:1809
-        command: powershell -Command Invoke-WebRequest http://web
+        command: curl.exe http://web
   ```
 
 ---
@@ -1180,13 +1047,13 @@ background-image: url(assets/compose.png)
   version: '2.1'
   services:
       web:
-        image: chocolateyfest/iis
+        image: mywebsite
         ports:
           - 80:80
 
       client:
         image: mcr.microsoft.com/windows/nanoserver:1809
-        command: powershell -Command Sleep 2 ; Invoke-WebRequest http://web
+        command: curl.exe http://web
         depends_on:
           - web
 
@@ -1373,16 +1240,6 @@ class: title
 
 - Downloading 1GB ZIP and doing the extract command wrong is painful.
 
---
-
-- Experimental feature
-  - `docker build --squash`
-
-  - Squash all layers into one.
-  - Use multiple `RUN` instructions to keep Dockerfile readable.
-
-  - Docker still caches individual layers to make subsequent builds fast.
-
 ---
 
 ## Better: Use multi-stage builds
@@ -1408,6 +1265,171 @@ https://stefanscherer.github.io/use-multi-stage-builds-for-smaller-windows-image
 - [Dockerfile on Windows](https://docs.microsoft.com/en-us/virtualization/windowscontainers/manage-docker/manage-windows-dockerfile)
 
 - [Optimize Windows Dockerfiles](https://docs.microsoft.com/en-us/virtualization/windowscontainers/manage-docker/optimize-windows-dockerfile)
+
+---
+
+class: title
+
+# Dockerize .NET applications
+
+---
+
+# .NET images
+
+- Microsoft has several .NET Core and ASP .NET images. See the overview on the Docker Hub https://hub.docker.com/_/microsoft-dotnet-core
+
+- Multi-stage builds are used to reduce the image size for the final application image.
+
+## Tutorial
+- We will walk through this small tutorial
+- https://github.com/dotnet/dotnet-docker/blob/master/samples/aspnetapp/aspnet-docker-dev-in-container.md
+
+---
+
+# Clone the dotnet-docker sample repo
+
+.exercise[
+
+- Clone the repo in the toplevel directory
+```
+cd C:\
+git clone https://github.com/dotnet/dotnet-docker
+```
+
+- Go into the ASP .NET sample folder
+```
+cd C:\dotnet-docker\samples\aspnetapp
+```
+]
+
+---
+
+# Run the ASP .NET application from source
+
+.exercise[
+
+- Use a volume to run the app in a container with the sources from the host.
+  ```
+  docker run --rm -it -p 8000:80 `
+      -v "$(pwd):c:\app\" -w \app\aspnetapp `
+      --name aspnetappsample mcr.microsoft.com/dotnet/core/sdk:2.2 `
+      dotnet watch run
+  ```
+
+- Open the browser http://localhost:8000
+
+- With the full SDK image we can easily run the application from source code.
+]
+---
+# Build a Docker images of the ASP .NET application
+
+- Multi-stage build Dockerfiles have multiple `FROM` instructions.
+
+- First stage with SDK
+  ```
+  FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
+  WORKDIR /app
+
+  # copy csproj and restore as distinct layers
+  COPY *.sln .
+  COPY aspnetapp/*.csproj ./aspnetapp/
+  RUN dotnet restore
+
+  # copy everything else and build app
+  COPY aspnetapp/. ./aspnetapp/
+  WORKDIR /app/aspnetapp
+  RUN dotnet publish -c Release -o out
+  ```
+
+---
+
+# Build a Docker image of the ASP .NET application
+
+- Final stage with only the runtime
+  ```
+  FROM mcr.microsoft.com/dotnet/core/aspnet:2.2 AS runtime
+  WORKDIR /app
+  COPY --from=build /app/aspnetapp/out ./
+  ENTRYPOINT ["dotnet", "aspnetapp.dll"]
+  ```
+
+- Notice: This is still part of the same `Dockerfile` as in the previous slide.
+
+- The `COPY` instruction copies the output of the `build` stage into the `runtime` stage.
+
+---
+
+# Build a Docker image of the ASP .NET application
+
+.exercise[
+
+- Now build the image
+  ```
+  docker build -t aspnetapp .
+  ```
+
+- Check the Docker images sizes
+  ```
+  docker image ls
+  ```
+]
+
+---
+
+class: title
+
+# Manifest lists
+
+---
+
+# Windows OS version must match base image version
+
+- For `process` isolation on Windows only images that have the same kernel version as the Windows host OS can be started.
+
+- But Windows has another isolation mode: `hyperv`
+
+- With `hyperv` isolation also older images than the kernel version can be started.
+
+- Let's check some images on the Docker Hub ...
+
+---
+
+# Manifest query tool
+
+- There is a multi-arch image `mplatform/mquery` from Docker Captain Phil Estes
+- It lists all supported platforms of an image.
+- Several images for different platforms can be combined to a manifest list.
+
+.exercise[
+
+- Check which platforms are supported for the `golang` image.
+
+  ```
+  docker run mplatform/mquery golang
+  ```
+
+- Oh it doesn't work. Run it in Hyper-V isolation mode
+
+  ```
+  docker run --isolation=hyperv mplatform/mquery golang
+  ```
+  
+- Check which platforms are supported by the `mplatform/mquery` tool itself.
+]
+
+---
+
+# Windows OS versions
+
+- 10.0.**14393** = Windows Server 2016 LTSC
+
+- 10.0.**16299** = Windows Server 2016, version 1709 SAC
+
+- 10.0.**17134** = Windows Server 2016, version 1803 SAC
+
+- 10.0.**17763** = Windows Server 2019 LTSC
+
+- So the `mplatform/mquery` tool only has the 2016 base image in the manifest list. That's why we can run it with `--isolation=hyperv` mode.
 
 ---
 
@@ -1453,6 +1475,7 @@ class: title
   ```Dockerfile
   FROM mcr.microsoft.com/windows/nanoserver:1809
   WORKDIR /data
+  USER ContainerAdministrator
   CMD cmd /c dir content.txt & echo hello >content.txt
   ```
 
@@ -1495,19 +1518,21 @@ class: title
 
 - You can mount a volume only into an empty directory.
 
-- The `chocolatey/iis` default folder `C:\inetpub\wwwroot` is not empty.
+- Windows Server 2019 also allows mapping into non-empty directories.
+
+- Feature parity with Linux. This wasn't possible with Windows Server 2016.
 
 ---
 
-## Orchestrators?
+## Orchestrators
 
-- Docker Swarm
+- Docker Swarm, Docker EE / UCP
 
 Work in progress:
 
-- Kubernetes, currently in beta, planned for 1.13
+- Kubernetes, currently in beta, just landed in 1.14
 
-- OpenShift
+- Docker EE / UCP with Kubernetes and Windows in a next release
 
 ...
 
@@ -1536,6 +1561,31 @@ class: title
   ```powershell
   docker swarm init --advertise-addr 10.0.xx.xx 
   ```
+
+- Notice: There is a short interruption, the RDP should automatically reconnect.
+
+]
+
+---
+
+## Swarm mode firewall exceptions
+
+.exercise[
+
+- Open the ports for Docker Swarm mode on the manager node and the worker node(s)
+  ```
+  New-NetFirewallRule -Protocol TCP -LocalPort 2377 -Direction Inbound `
+  -Action Allow -DisplayName "Docker swarm-mode cluster management TCP"
+  
+  New-NetFirewallRule -Protocol TCP -LocalPort 7946 -Direction Inbound `
+  -Action Allow -DisplayName "Docker swarm-mode node communication TCP"
+  
+  New-NetFirewallRule -Protocol UDP -LocalPort 7946 -Direction Inbound `
+  -Action Allow -DisplayName "Docker swarm-mode node communication TCP"
+  
+  New-NetFirewallRule -Protocol UDP -LocalPort 4789 -Direction Inbound `
+  -Action Allow -DisplayName "Docker swarm-mode overlay network UDP"
+```
 
 ]
 
@@ -1578,16 +1628,15 @@ class: title
 - Define services in a Compose file
   ```
   version: "3.2"
-  services:
-
-    chocolate:
-      image: chocolateyfest/appetizer:1.0.0
-      ports:
-        - 8080:8080
-      deploy:
-        placement:
-          constraints:
-            - node.platform.os == windows
+  services:  
+      chocolate:
+        image: chocolateyfest/appetizer:1.0.0
+        ports:
+          - 8080:8080
+        deploy:
+          placement:
+            constraints:
+              - node.platform.os == windows
   ```
 
 ---
@@ -1651,7 +1700,7 @@ class: title
 ## Workhop done. Now where to build Windows containers?
 
 - Windows 10
-  - Docker 4 Windows (using Hyper-V)
+  - Docker Desktop (using Hyper-V)
 
 - Azure
   - Windows Server 2016, 1709, 1803, **2019**
@@ -1670,11 +1719,30 @@ class: title
 
 - Follow Elton Stoneman on Twitter [@EltonStoneman](https://twitter.com/EltonStoneman)
 
-- Another Docker on Windows workshop
+- Elton Stoneman's Docker on Windows workshop
   - [https://dwwx.space/](https://dwwx.space/)
+  - will be updated to Windows Server 2019 soon
 
 - Windows related Docker Labs
   - [https://github.com/docker/labs/tree/master/windows](https://github.com/docker/labs/tree/master/windows)
+
+---
+background-image: url(assets/book.png)
+
+## Docker on Windows book, **Second edition**
+
+- Buy Elton Stoneman's book.
+- It's extraordinary.
+- Fully updated to Windows Server 2019
+- Elasticsearch, Kibana
+- Traefik
+- Prometheus
+- Jenkins
+- Git server
+- ...
+
+Docker on Windows: From 101 to production  
+with Docker on Windows, 2nd Edition
 
 ---
 
