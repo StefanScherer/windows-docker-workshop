@@ -702,8 +702,8 @@ Feature parity with Linux. The previous Windows Server 2016 couldn't do that.
 - Kill and remove the container
 
   ```powershell
-  docker container kill web
-  docker container rm web
+  docker container kill iis
+  docker container rm iis
   ```
 ]
 
