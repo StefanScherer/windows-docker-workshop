@@ -1,7 +1,7 @@
 # Settings
 
 variable "dns_prefix" {
-  default = "dog"
+  default = "xcel"
 }
 
 variable "count" {
@@ -13,7 +13,7 @@ variable "group_name" {
 }
 
 variable "account" {
-  default = "dogtraining"
+  default = "xcelerate"
 }
 
 variable "location" {
@@ -30,7 +30,7 @@ variable "admin_username" {
 }
 
 variable "workshop_image" {
-  default = "win2019-17763-348"
+  default = "windows_2019_846"
 }
 
 variable "vm_size" {
