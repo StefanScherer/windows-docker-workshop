@@ -54,6 +54,7 @@ choco install -y firefox
 
 Write-Output 'Install Docker Compose'
 choco install -y docker-compose
+choco install -y kubernetes-cli
 
 choco install -y poshgit
 choco install -y visualstudiocode
