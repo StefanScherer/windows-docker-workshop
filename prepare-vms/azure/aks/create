@@ -1,0 +1,28 @@
+#!/bin/bash
+
+PASSWORD_WIN="XfKXhHoYYtYMh*T"
+resourceGroup=xfry-2-windows-docker-workshop
+clusterName=xfry-aks-01
+
+# create 2-node linux pool
+az aks create \
+    --resource-group $resourceGroup \
+    --name $clusterName \
+    --node-count 2 \
+    --enable-addons monitoring \
+    --kubernetes-version 1.15.5 \
+    --generate-ssh-keys \
+    --windows-admin-password $PASSWORD_WIN \
+    --windows-admin-username azureuser \
+    --vm-set-type VirtualMachineScaleSets \
+    --load-balancer-sku standard \
+    --network-plugin azure
+
+# create 1-node windows pool
+az aks nodepool add \
+    --resource-group $resourceGroup \
+    --cluster-name $clusterName \
+    --os-type Windows \
+    --name npwin \
+    --node-count 1 \
+    --kubernetes-version 1.15.5
