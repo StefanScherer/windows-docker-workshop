@@ -119,8 +119,7 @@ Write-Output '* Cloning the workshop repo'
 mkdir C:\scm -ErrorAction Ignore
 cd C:\scm
 git clone https://github.com/sixeyed/dak4.net.git
-git checkout $branch
-$branch | Out-File C:\branch.txt
+'master' | Out-File C:\branch.txt
 
 Write-Output 'Disable autologon'
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name AutoAdminLogon -PropertyType DWORD -Value "0" -Force
