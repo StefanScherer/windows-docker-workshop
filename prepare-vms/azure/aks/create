@@ -2,7 +2,7 @@
 
 PASSWORD_WIN="XfKXhHoYYtYMh*T"
 resourceGroup=xfry-2-windows-docker-workshop
-clusterName=xfry-aks-01
+clusterName=xfry-aks-02
 
 # create 2-node linux pool
 az aks create \
@@ -26,3 +26,10 @@ az aks nodepool add \
     --name npwin \
     --node-count 1 \
     --kubernetes-version 1.15.5
+
+# download kube config
+timestamp=$(date +"%Y-%m-%d_%H-%M-%S")
+mv ~/.kube  ~/.kube_$timestamp
+az aks get-credentials --resource-group $resourceGroup --name $clusterName
+mv ~/.kube home-.kube-$clusterName
+mv ~/.kube_$timestamp ~/.kube
